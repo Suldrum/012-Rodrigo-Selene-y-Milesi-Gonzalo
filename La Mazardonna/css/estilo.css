@@ -1,0 +1,308 @@
+ /*ENCABEZADO MOBILE*/
+ 
+ header{ 
+   /* height: 300px;*/
+    text-align: center;
+    background-image: url('imagenes/fondoheadder.jpg');
+    background-size: cover;
+    width: 100%;
+    margin-bottom: 5%;  
+}
+
+.imgmenu{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 200px;
+    width: 200px;  
+    padding-top: 0;
+}
+
+#listaNav{
+    display: none;
+}
+
+/*BODY MOBILE*/
+body{
+    background-image: url('imagenes/fondobody.jpg');
+    background-size: cover;
+    color:  black;
+    width: auto;
+    margin: center;
+}
+h1{
+    text-align: center;
+}
+.imgBody{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 50%;
+    width: 60%;  
+    padding: 2px; 
+}
+
+p{
+    font-size: 15px;
+}
+.divPresentacion{
+    display: flex;
+    align-content: space-around;
+    margin: 5px;
+}
+.divListas{
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5px;
+}
+
+/* TABLA MENU.HTML*/
+#tablaMenu{
+    margin-left: auto;
+    margin-right: auto;
+    height: auto;
+    width: auto;
+    background-color: black;
+    font-size: larger;
+    color: white;    
+}
+
+thead{
+    text-align: center;
+    font-style: italic;  
+}
+
+tbody{
+    background-color: whitesmoke;
+    background-position: center;
+    background-size: cover;
+    background-attachment: scroll;
+    z-index: auto;
+    text-align: left;    
+    color:  transparent;  
+    -webkit-text-stroke: 1.5px darkslategrey;
+
+}
+
+.columnaIngredientes{
+    display: none;
+}
+
+/*FOOTER MOBILE*/
+footer{
+    background-color: rgb(18, 114, 7);
+    height: auto;
+    width: 100%;
+    position: relative;
+    clear: both;
+    color:whitesmoke;
+    font-size: 15px;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 5%;
+}
+.iconosocial{
+    width: 15px;
+    height: 15px;
+}
+
+  /*FUENTES*/
+  .Fmenu{
+    text-align: justify;
+    font-style: italic;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    position: center;
+    margin-top: 20px
+}
+
+h1{
+    text-align: center;
+    font-style: normal;
+    font-size: 50px;
+}
+
+label, .Ftexto{
+    font-size: 25px;
+}
+
+input{
+    font-size: 18px;
+}
+
+ul{        
+    list-style-type: none ;
+}
+
+@media only screen and (min-width: 600px){
+
+
+
+    /*ENCABEZADO*/
+    header{ 
+        height: 300px;
+        text-align: center;
+        background-size: cover;
+        width: 100%;
+        margin-bottom: 5%;  
+    }
+
+    .imgmenu{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        height: 200px;
+        width: 200px;  
+        padding-top: 2%;
+        
+    }
+
+    .menuNavegacion{
+        width: 400px;
+        margin-left: auto;
+        margin-right: auto;    
+    }
+
+    .navegacion{
+        text-decoration: none;
+        color: rgb(3, 43, 3);
+    }
+
+    #btnNav{
+        display: none;
+    }
+
+    #listaNav{
+        list-style-type: none;
+        display: flex; 
+        font-display: block;
+
+    }
+    a:hover{
+        background-color: lightblue;
+        background-size: 40px;
+    }
+
+    /*CUERPO*/
+    body{
+        background-image: url('imagenes/fondobody.jpg');
+        background-size: cover;
+        color:  black;
+        width: auto;
+        margin: center;
+    }
+
+    
+
+    .divPedido{
+        display: flex;
+        align-content: space-between;
+        height: 20px;
+    }
+
+    .divListas{
+        font-size: larger;
+    }
+
+    .imgBody{
+        display: block;
+        margin-left: auto;
+        margin-right: 5%;
+        height: 30%;
+        width: 40%;  
+        padding: 2px; 
+    }
+
+    .divParrafo{
+        text-align: justify;
+        font-size: xx-large;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
+    #IDpedido{
+        width: 100%;
+        color: black;  
+    }
+    .divForm{
+        background-color: lightcoral;
+        border-color: black;
+        padding-bottom: 2%;
+        padding-left: 2%;
+        padding-top: 2%;
+    }
+    #divCaptcha{
+        width: 500px;
+        border-color: black;
+        background-color: whitesmoke;
+        padding-bottom: 2%;
+        padding-left: 2%;
+    
+    }
+
+    #formPedido{
+        display: grid;
+    }
+
+    .columnaIngredientes{
+        display: block;
+    }
+
+    /*PIE*/
+    footer{
+        font-size: 20px;
+    }
+
+
+
+    .divContacto{
+        width: 40%;
+    }
+
+
+    /*FUENTES*/
+    .Fmenu{
+        text-align: justify;
+        font-style: italic;
+        font-size: 30px;
+        font-weight: bold;
+        text-decoration: none;
+        position: center;
+        margin-top: 20px
+    }
+
+    h1{
+        text-align: center;
+        font-style: normal;
+        font-size: 100px;
+    }
+
+    label, .Ftexto{
+        font-size: 25px;
+    }
+
+    input{
+        font-size: 18px;
+    }
+
+    ul{        
+        list-style-type: none ;
+    }
+
+
+
+    #imgcarta{
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 10%;
+    }
+
+
+
+    /*TABLA*/
+
+   
+
+}

@@ -1,0 +1,9 @@
+{
+  "pedido": [
+    {
+      "producto": "Empanada de carne",
+      "cantidad": "2",
+      "precio":  0   
+    }
+  ]
+}

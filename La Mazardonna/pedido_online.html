@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Pedido Online</title>
+        <link rel= "stylesheet" href="css/estilo.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+
+    <body>
+
+        <header>
+            <nav class="Fmenu">
+                <img class="imgmenu" src="imagenes/logo.jpg" alt="">
+                <div class="menuNavegacion">
+                    <button id="btnNav"> <i class="fa fa-chevron-circle-down"></i></button>
+                    <li id="listaNav">
+                        <ul><a class='navegacion' href="index.html">Home</a> </ul>
+                        <ul><a class='navegacion' href="menu.html">Menu</a> </ul>
+                        <ul><a class='navegacion' href="pedido_online.html">Pedi ya!</a></ul>
+                    </li>
+                </div>          
+            </nav>   
+        </header>
+
+        <h1>Pedidos ON-line</h1>
+        <form id="IDpedido" action="registro" onsubmit="return validar()">
+            <div class="divPresentacion">      
+                <div class="divForm">
+                    <label for="calle">Calle: </label>
+                    <input type="text" id="IDcalle" name="Fcalle" value="" />
+                    <label for="numero">N°: </label>
+                    <input type="number" id="IDnumero" name="Fnumero" value="" min="1" max="9999" maxlength="4" />
+                    <label for="piso/dtpo">Piso/Dtpo </label>
+                    <input type="number" value="" min="1" max="50" maxlength="2" step="1"> 
+                    <label for="letraDireccion">-</label>
+                    <select>
+                        <option value=0>---</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                    <br>
+                    <br>
+                    <textarea name="aclaraciones" aria-valuetext="Elija un producto" rows="8" cols="40"> Aclaraciones...</textarea>
+                </div>
+                <div id="formPedido">
+                    <div class="divPedido">
+                        <label id="IDproducto" for="agregarProducto">Producto: </label>
+                        <select>
+                                <option value="0">---</option>
+                                <option value="pizzaMuza">Pizza Muzarella</option>
+                                <option value="pizzaNapo">Pizza Napolitana</option>
+                                <option value="empCarne">Empanada Carne</option>
+                                <option value="empJyQ">Empanada JyQ</option>
+                        </select>
+                        <label for="cantidad">Cantidad: </label>
+                        <input type="number" value="1" min="1" max="99" maxlength="2" step="1"> 
+                    </div>
+                    <div class="divPedido">
+                        <button>Agregar</button> 
+                        <button>Agregar 3 random</button> 
+                        <button>Borrar pedido</button> 
+                    </div> 
+                    <table id="tablaMenu">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="divCaptcha">
+                <p class="Ftexto">Ingrese el número que aparece en la imagen</p>
+                <p>
+                    <img id="num1" src="" alt="">
+                    <img id="num2" src="" alt="">
+                    <img id="num3" src="" alt="">
+                </p>
+                <input type="number" name="" id="captchaintroducido">
+
+                <input id="botonenviar" type="button" value="Pedir" /> 
+            </div>
+        </form>
+
+        <footer>
+            <div class="divContacto">    
+                <p>
+                    Llamanos al... 
+                </p> 
+                <ul>
+                    <li> (2262)15-675134</li>
+                    <li> (2261)15-439574</li>
+                    <li> (0249)15-468795</li>
+                    <li> (2266)15-789463</li>
+                </ul>
+            </div>    
+            <div class='divContacto'> 
+                <p>
+                    Contactanos en nuestras redes
+                </p>
+                <ul>
+                     <li><img class="iconosocial" src="imagenes/iconofb.png"> Facebook</li>
+                     <li><img class="iconosocial" src="imagenes/iconoinsta.png"> Instagram</li>
+                     <li><img class="iconosocial" src="imagenes/iconotwitter.png"> Twitter</li>
+                </ul>
+            </div> 
+        </footer>
+
+        <script type="text/javascript" src="js/script.js"></script>
+
+    </body>
+</html>
