@@ -1,5 +1,8 @@
 "use strict";
-const ArrJSon = "arregloPedidos.json";
+
+
+const requestURL = 'https://github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo/tree/master/La%20Mazardonna/js/arregloPedidos.json';
+const request = new XMLHttpRequest();
 
 //BOTON MENU NAV
 
@@ -15,10 +18,42 @@ function  MostrarNav(){
 
 btnmenu.addEventListener("click", MostrarNav);
 
+////    TABLA DE PEDIDOS ////
 function cargarTabla(){
-
-   
+    request.open('GET', requestURL);
+    request.responseType = 'json';
+    request.send();
+    request.onload = function() {
+        console.log("aasss");
+        const arregloPedidos = request.response;
+        cargarPedido(arregloPedidos);
+      }
 }
+
+  function cargarPedido(jsonObj) {
+    const aux = jsonObj;
+    
+    for (var i = 0; i < aux.lenght; i++) {
+        const myFila = document.createElement('tr');
+        const myProducto = document.createElement('td');
+        const myCantidad= document.createElement('td');
+        const myPrecio = document.createElement('td');
+    
+        myProducto.textContent = aux[i].producto;
+        myCantidad.textContent = aux[i].cantidad;
+        myPrecio.textContent = aux[i].precio;
+
+            
+        myFila .appendChild(myProducto );
+        myFila .appendChild(myCantidad);
+        myFila .appendChild(myPrecio);
+    
+        section.appendChild(myFila);
+      }
+    
+  }
+
+////    TABLA DE PEDIDOS ////
 
 document.addEventListener("load", cargarTabla());
 
