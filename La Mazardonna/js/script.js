@@ -27,13 +27,14 @@ function cargarTabla(){
         console.log("aasss");
         const arregloPedidos = request.response;
         cargarPedido(arregloPedidos);
-      }
+    }
 }
 
   function cargarPedido(jsonObj) {
     const aux = jsonObj;
     
     for (var i = 0; i < aux.lenght; i++) {
+        /*
         const myFila = document.createElement('tr');
         const myProducto = document.createElement('td');
         const myCantidad= document.createElement('td');
@@ -50,9 +51,20 @@ function cargarTabla(){
     
         section.appendChild(myFila);
       }
-    
-  }
+    */
 
+    let tabla = document.getElementById("tablaPedido");
+    let fila = tabla.insertRow(-1);
+
+    let colProducto = fila.insertCell(0);
+    let colCantidad = fila.insertCell(1);
+    let colPrecio = fila.insertCell(2);
+
+    colProducto.innerHTML = aux[i].producto;
+    colCantidad.innerHTML = aux[i].cantidad;
+    colPrecio.innerHTML = aux[i].precio;
+  }
+}
 ////    TABLA DE PEDIDOS ////
 
 document.addEventListener("load", cargarTabla());
