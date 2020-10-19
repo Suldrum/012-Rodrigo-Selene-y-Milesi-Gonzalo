@@ -1,8 +1,15 @@
 "use strict";
 
+const myHeaders = new Headers();
+myHeaders.append('Access-Control-Allow-Origin', 'https://github.com/Suldrum');
+myHeaders.append('Access-Control-Allow-Headers','Content-Type');
+myHeaders.append('Access-Control-Allow-Credentials', 'true');
+myHeaders.append('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
 
-const requestURL = 'https://github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo/tree/master/La%20Mazardonna/js/arregloPedidos.json';
-const request = new XMLHttpRequest();
+
+const gitURL = 'https://github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo/tree/master/La-Mazardonna/js/arregloPedidos.json';
+//const request = new XMLHttpRequest();
+
 
 //BOTON MENU NAV
 
@@ -20,18 +27,33 @@ btnmenu.addEventListener("click", MostrarNav);
 
 ////    TABLA DE PEDIDOS ////
 function cargarTabla(){
-    request.open('GET', requestURL);
-    request.responseType = 'json';
-    request.send();
-    request.onload = function() {
+
+    /*
+    myHeaders.open('GET', gitURL);
+    myHeaders.responseType = 'json';
+    myHeaders.send();
+    myHeaders.onload = function() {
         console.log("aasss");
-        const arregloPedidos = request.response;
+        const arregloPedidos = myHeaders.response;
         cargarPedido(arregloPedidos);
     }
+    
+  */
+
+ fetch(gitURL, {
+    headers: myHeaders
+})
+    // 1
+   .then(response => response.json()) // 2
+   .then(console.log) // 3
+   .catch(console.log('Algo salió mal.'));
+
 }
 
   function cargarPedido(jsonObj) {
     const aux = jsonObj;
+    let tabla = document.getElementById("tablaPedido");
+
     
     for (var i = 0; i < aux.lenght; i++) {
         /*
@@ -49,20 +71,16 @@ function cargarTabla(){
         myFila .appendChild(myCantidad);
         myFila .appendChild(myPrecio);
     
-        section.appendChild(myFila);
+       tabla.appendChild(myFila);
       }
     */
+   
+   let fila = tabla.insertRow(-1);
+    fila.insertCell(0).value =  aux[i].producto; ;
+    fila.insertCell(1).value =  aux[i].cantidad;
+    fila.insertCell(2).value =  aux[i].precio;
 
-    let tabla = document.getElementById("tablaPedido");
-    let fila = tabla.insertRow(-1);
 
-    let colProducto = fila.insertCell(0);
-    let colCantidad = fila.insertCell(1);
-    let colPrecio = fila.insertCell(2);
-
-    colProducto.innerHTML = aux[i].producto;
-    colCantidad.innerHTML = aux[i].cantidad;
-    colPrecio.innerHTML = aux[i].precio;
   }
 }
 ////    TABLA DE PEDIDOS ////
