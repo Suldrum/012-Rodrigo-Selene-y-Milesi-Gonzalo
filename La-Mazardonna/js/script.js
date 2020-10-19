@@ -96,7 +96,7 @@ function borrarPedido(fila)
 }
 
 function editarPedido(fila){
-    
+    //devolveria los valores de la fila a donde se ingresan, al darle a confirmar los modifica en la misma fila?
     
 }
 
