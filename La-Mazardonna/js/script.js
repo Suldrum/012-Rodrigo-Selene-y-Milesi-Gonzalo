@@ -26,25 +26,7 @@ function  MostrarNav(){
 
 btnmenu.addEventListener("click", MostrarNav);
 
-////    TABLA DE PEDIDOS ////
 
-
-  //  { "producto": "Empanada de carne", "cantidad": 2, "precio":  0},
-   //  { "producto": "Empanada de jamon", "cantidad": 1, "precio":  0}]; 
-
-//function cargarTabla(){
-
-    /*
-    myHeaders.open('GET', gitURL);
-    myHeaders.responseType = 'json';
-    myHeaders.send();
-    myHeaders.onload = function() {
-        console.log("aasss");
-        const arregloPedidos = myHeaders.response;
-        cargarPedido(arregloPedidos);
-    }
-}   
-  */
 function cargarJson()
 {
 
@@ -65,15 +47,16 @@ function cargarJson()
 
 }
 
+
+/////////// TABLA DE PEDIDOS //////////////
+
 let pedidosJson =  new Array();
 document.addEventListener("load", cargarTabla());
 
-
-/////////// TABLA DE PEDIDOS //////////////
 function cargarTabla() {
     cargarJson();
     for(var i in pedidosJson) {      
-        let item = pedidosJson[i];
+        var item = pedidosJson[i];
         cargarPedido(item); 
 
     }
@@ -82,8 +65,8 @@ function cargarTabla() {
   function cargarPedido(nuevoPedido) {
     // Recibe la direccion de la tabla y crea una fila siempre al final
 
-    let tabla = document.getElementById("tablaPedido");
-    let fila = tabla.insertRow(-1);
+    var tabla = document.getElementById("tablaPedido");
+    var fila = tabla.insertRow(-1);
 
     /// El td del producto
     var producto = document.createElement("td");
@@ -106,6 +89,17 @@ function cargarTabla() {
     */
 }
 
+function borrarPedido(fila)
+{
+    var tabla = document.getElementById("tablaPedido");
+    tabla.removeChild(fila);
+}
+
+function editarPedido(fila){
+    
+    
+}
+
 /////////// FIN TABLA DE PEDIDOS //////////////
 
 
@@ -114,9 +108,9 @@ function cargarTabla() {
 let valorCaptcha;
 function crearCaptcha(){
 //carga al azar al cargar la pagina
-    let n1 = Math.floor((Math.random()*8+1) );
-    let  n2 = Math.floor((Math.random()*9) );
-    let n3 = Math.floor((Math.random()*9) );
+    var n1 = Math.floor((Math.random()*8+1) );
+    var  n2 = Math.floor((Math.random()*9) );
+    var n3 = Math.floor((Math.random()*9) );
     valorCaptcha = n1*100+n2*10+n3;
     verCaptcha(n1,n2,n3);
 }
@@ -142,13 +136,13 @@ let btnenviar = document.getElementById("botonenviar");
 btnenviar.addEventListener("click", validar); 
 
 function validar(){ 
-    let IDcalle= document.getElementById("IDcalle").value;
-    let  IDnumero = document.getElementById("IDnumero").value;
+    var IDcalle= document.getElementById("IDcalle").value;
+    var  IDnumero = document.getElementById("IDnumero").value;
     if ((IDcalle == 0) || (IDnumero == 0)  ) {
         alert("Debes completar todos los campos correctamente");
     }     
     else{
-        let captcha = document.getElementById("captchaintroducido").value;
+        var captcha = document.getElementById("captchaintroducido").value;
         if (captcha !=  valorCaptcha){
             alert("El captcha introducido es incorrecto, por favor intente nuevamente");
         }
