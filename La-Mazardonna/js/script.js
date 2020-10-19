@@ -1,13 +1,14 @@
 "use strict";
-
+/*
 const myHeaders = new Headers();
-myHeaders.append('Access-Control-Allow-Origin', 'https://github.com/Suldrum');
-myHeaders.append('Access-Control-Allow-Headers','Content-Type');
-myHeaders.append('Access-Control-Allow-Credentials', 'true');
-myHeaders.append('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
+myHeaders.append('Access-Control-Allow-Headers', ' Content-Type');
+myHeaders.append('Access-Control-Allow-Origin', ' *');
+myHeaders.append('Access-Control-Allow-Credentials', ' true');
+myHeaders.append('Access-Control-Allow-Methods', ' OPTIONS,POST,GET');
 
+*/
 
-const gitURL = 'https://github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo/tree/master/La-Mazardonna/js/arregloPedidos.json';
+const gitURL = 'https:///github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo/tree/master/La-Mazardonna/js/arregloPedidos.json';
 //const request = new XMLHttpRequest();
 
 
@@ -26,7 +27,12 @@ function  MostrarNav(){
 btnmenu.addEventListener("click", MostrarNav);
 
 ////    TABLA DE PEDIDOS ////
-function cargarTabla(){
+
+
+  //  { "producto": "Empanada de carne", "cantidad": 2, "precio":  0},
+   //  { "producto": "Empanada de jamon", "cantidad": 1, "precio":  0}]; 
+
+//function cargarTabla(){
 
     /*
     myHeaders.open('GET', gitURL);
@@ -37,62 +43,77 @@ function cargarTabla(){
         const arregloPedidos = myHeaders.response;
         cargarPedido(arregloPedidos);
     }
-    
+}   
   */
+function cargarJson()
+{
 
- fetch(gitURL, {
-    headers: myHeaders
-})
-    // 1
-   .then(response => response.json()) // 2
-   .then(console.log) // 3
-   .catch(console.log('Algo salió mal.'));
+    var pedidos = [
+       { "producto": "Empanada de carne", "cantidad": 2, "precio":  0},
+        { "producto": "Empanada de jamon", "cantidad": 1, "precio":  0}]; 
+    
+        for(var i in pedidos) {    
+        
+            var item = pedidos[i];   
+        
+            pedidosJson.push({ 
+                "producto" : item.producto,
+                "cantidad"  : item.cantidad,
+                "precio"      : item.precio
+            });
+        }
 
 }
 
-  function cargarPedido(jsonObj) {
-    const aux = jsonObj;
-    let tabla = document.getElementById("tablaPedido");
-
-    
-    for (var i = 0; i < aux.lenght; i++) {
-        /*
-        const myFila = document.createElement('tr');
-        const myProducto = document.createElement('td');
-        const myCantidad= document.createElement('td');
-        const myPrecio = document.createElement('td');
-    
-        myProducto.textContent = aux[i].producto;
-        myCantidad.textContent = aux[i].cantidad;
-        myPrecio.textContent = aux[i].precio;
-
-            
-        myFila .appendChild(myProducto );
-        myFila .appendChild(myCantidad);
-        myFila .appendChild(myPrecio);
-    
-       tabla.appendChild(myFila);
-      }
-    */
-   
-   let fila = tabla.insertRow(-1);
-    fila.insertCell(0).value =  aux[i].producto; ;
-    fila.insertCell(1).value =  aux[i].cantidad;
-    fila.insertCell(2).value =  aux[i].precio;
-
-
-  }
-}
-////    TABLA DE PEDIDOS ////
-
+let pedidosJson =  new Array();
 document.addEventListener("load", cargarTabla());
 
 
-// CREANDO CAPTCHA
+/////////// TABLA DE PEDIDOS //////////////
+function cargarTabla() {
+    cargarJson();
+    for(var i in pedidosJson) {      
+        let item = pedidosJson[i];
+        cargarPedido(item); 
 
-//carga al azar al cargar la pagina
+    }
+}
+
+  function cargarPedido(nuevoPedido) {
+    // Recibe la direccion de la tabla y crea una fila siempre al final
+
+    let tabla = document.getElementById("tablaPedido");
+    let fila = tabla.insertRow(-1);
+
+    /// El td del producto
+    var producto = document.createElement("td");
+    producto.textContent =nuevoPedido.producto; // el textContent del td es el producto
+    fila.appendChild(producto);
+    // El td del cantidad
+    var cantidad = document.createElement("td");
+    cantidad.textContent =nuevoPedido.cantidad ; // el textContent del td es el cantidad
+    fila.appendChild(cantidad);
+    // El td del precio
+    var precio = document.createElement("td");
+    precio.textContent =nuevoPedido.precio; // el textContent del td es el precio
+    fila.appendChild(precio);
+    // Finalmente agregamos la fila al cuerpo de la tabla
+    tabla.appendChild(fila);
+
+    /*
+    // modifica el atributo "border" de la tabla y lo fija a "2";
+     tabla.setAttribute("border", "2");
+    */
+}
+
+/////////// FIN TABLA DE PEDIDOS //////////////
+
+
+/////////// CAPTCHA //////////////
+
 let valorCaptcha;
 function crearCaptcha(){
+//carga al azar al cargar la pagina
     let n1 = Math.floor((Math.random()*8+1) );
     let  n2 = Math.floor((Math.random()*9) );
     let n3 = Math.floor((Math.random()*9) );
@@ -104,19 +125,22 @@ document.addEventListener("load", crearCaptcha());
 
 
 function verCaptcha(n1,n2,n3) {    
-        //les digo que numero deben poner al cambiar el captcha
+//les digo que numero deben poner al cambiar el captcha
         
     console.log(n1,n2,n3);
     document.getElementById("num1").src = "js/imgcaptcha/" + n1+".png";
     document.getElementById("num2").src = "js/imgcaptcha/" + n2+".png";
     document.getElementById("num3").src = "js/imgcaptcha/" + n3+".png";
 }
-    
+
+/////////// FIN CAPTCHA //////////////
+
+
+/////////// VALIDACION DE FORMULARIO //////////////
 document.addEventListener("load", IDpedido.reset()); /*Limpia el formulario cada vez que se cargue la pagina*/
 let btnenviar = document.getElementById("botonenviar");
 btnenviar.addEventListener("click", validar); 
 
-//VALIDACION DEL FORMULARIO
 function validar(){ 
     let IDcalle= document.getElementById("IDcalle").value;
     let  IDnumero = document.getElementById("IDnumero").value;
@@ -134,7 +158,7 @@ function validar(){
         }
         crearCaptcha();
     }
-
+/////////// FIN DE VALIDACION DE FORMULARIO //////////////
 }
    
  
