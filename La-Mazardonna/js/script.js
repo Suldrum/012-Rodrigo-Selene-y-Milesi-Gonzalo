@@ -1,15 +1,6 @@
 "use strict";
-/*
-const myHeaders = new Headers();
-myHeaders.append('Access-Control-Allow-Headers', ' Content-Type');
-myHeaders.append('Access-Control-Allow-Origin', ' *');
-myHeaders.append('Access-Control-Allow-Credentials', ' true');
-myHeaders.append('Access-Control-Allow-Methods', ' OPTIONS,POST,GET');
 
-*/
-
-const gitURL = 'https:///github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo/tree/master/La-Mazardonna/js/arregloPedidos.json';
-//const request = new XMLHttpRequest();
+const gitURL = 'https:///github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo';
 
 
 //BOTON MENU NAV
@@ -25,7 +16,29 @@ function  MostrarNav(){
 }
 
 btnmenu.addEventListener("click", MostrarNav);
+//BOTONES TABLA DINAMICA//
+let btnAgregarPedido = document.getElementById("btnAgregar");
+let btnAgregarRandom = document.getElementById("btnAgregarRandom");
+let btnBorrarTabla = document.getElementById("btnBorrarTabla");
 
+btnAgregarPedido.addEventListener("click", agregarNuevoPedido);
+btnAgregarRandom.addEventListener("click", agregarPedidoRandom);
+btnBorrarTabla.addEventListener("click", borrarTabla);
+
+
+function agregarNuevoPedido(){
+    var inputProducto = document.getElementById("IDproducto").value;
+    console.log(inputProducto);
+}
+
+function agregarPedidoRandom(){
+    
+}
+
+function borrarTabla(){
+    
+}
+//ARREGLO JSON//
 
 function cargarJson()
 {
@@ -37,14 +50,18 @@ function cargarJson()
         for(var i in pedidos) {    
         
             var item = pedidos[i];   
-        
-            pedidosJson.push({ 
-                "producto" : item.producto,
-                "cantidad"  : item.cantidad,
-                "precio"      : item.precio
-            });
+            agregarElemArr(item);
+            
         }
 
+}
+
+function agregarElemArr (pedido){
+    pedidosJson.push({ 
+        "producto" : pedido.producto,
+        "cantidad" : pedido.cantidad,
+        "precio"   : pedido.precio
+    });
 }
 
 
@@ -99,6 +116,30 @@ function editarPedido(fila){
     //devolveria los valores de la fila a donde se ingresan, al darle a confirmar los modifica en la misma fila?
     
 }
+
+
+function filtroTabla()
+{
+    var contenidoFiltrado= new Array();
+    for(var i in pedidosJson) {      
+        var item = pedidosJson[i];
+       if (item.producto.searchString("Empanada"))
+       {
+            contenidoFiltrado.push (item);
+       }
+    
+
+    }
+
+    for(var i in contenidoFiltrado) {      
+       
+        console.log(contenidoFiltrado[i].producto);
+
+    }
+    
+}
+
+document.addEventListener("load", filtroTabla());
 
 /////////// FIN TABLA DE PEDIDOS //////////////
 
