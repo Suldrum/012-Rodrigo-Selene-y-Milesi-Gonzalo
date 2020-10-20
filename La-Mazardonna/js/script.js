@@ -142,25 +142,29 @@ function editarPedido(fila){
 }
 
 
+
+function cumpleFiltro(fila, busqueda)
+{
+    var compareWith="";
+    for (var j = 0; j < fila.length; j++) { 
+        compareWith = fila[j].innerHTML.toLowerCase(); 
+        if (busqueda.length == 0 || (compareWith.indexOf(busqueda) > -1))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 function filtroTabla(busqueda)
 {
     //desaparece las filas que no sea contengan lo buscado
     var tabla = document.getElementById("tablaPedido");
-// var busqueda = "empanada";
-//var busqueda = "pizza";
         var cellsOfRow="";
-        var found=false;
-        var compareWith="";
         for (var i = 1; i < tabla.rows.length; i++) {
             cellsOfRow = tabla.rows[i].getElementsByTagName('td');
-            found = false;
-            for (var j = 0; j < cellsOfRow.length && !found; j++) { 
-                compareWith = cellsOfRow[j].innerHTML.toLowerCase(); 
-                if (busqueda.length == 0 || (compareWith.indexOf(busqueda) > -1))
-                {
-                    found = true;
-                }
-            }
+            var found = cumpleFiltro(cellsOfRow,busqueda);
             if(found)
             {
                 tabla.rows[i].style.display = '';
