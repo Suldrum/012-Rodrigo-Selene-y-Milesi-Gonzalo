@@ -5,7 +5,7 @@ const gitURL = 'https:///github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo'
 
 //BOTON MENU NAV
 
-let btnmenu = document.getElementById("btnNav");
+let btnmenu = document.getElementById('btnNav');
 
 function  MostrarNav(){
     var listaMenu = document.getElementById("listaNav");
@@ -16,19 +16,33 @@ function  MostrarNav(){
 }
 
 btnmenu.addEventListener("click", MostrarNav);
+
+let pedidosJson =  new Array();
+document.addEventListener("load", cargarTabla());
 //BOTONES TABLA DINAMICA//
-let btnAgregarPedido = document.getElementById("btnAgregar");
-let btnAgregarRandom = document.getElementById("btnAgregarRandom");
-let btnBorrarTabla = document.getElementById("btnBorrarTabla");
+let btnAgregarPedido = document.getElementById('btnAgregar');
+let btnAgregarRandom = document.getElementById('btnAgregarRandom');
+let btnBorrarTabla = document.getElementById('btnBorrarTabla');
 
-btnAgregarPedido.addEventListener("click", agregarNuevoPedido);
-btnAgregarRandom.addEventListener("click", agregarPedidoRandom);
-btnBorrarTabla.addEventListener("click", borrarTabla);
+btnAgregarPedido.addEventListener('click', agregarNuevoPedido);
+btnAgregarRandom.addEventListener('click', agregarPedidoRandom());
+btnBorrarTabla.addEventListener('click', borrarTabla());
 
 
+/*function agregarValor (producto, cantidad)
+    let total = 10;
+    return total;
+*/
 function agregarNuevoPedido(){
-    var inputProducto = document.getElementById("IDproducto").value;
-    console.log(inputProducto);
+    var inputProducto = document.querySelector('#IDproducto').value;
+    var inputCantidad = parseInt(document.querySelector('#IDcantidad').value);
+    var items = 
+        {   "producto": inputProducto, 
+            "cantidad": inputCantidad, 
+            "precio":  22};//agregarValor(inputProducto,inputCantidad)}]; 
+    console.log(items.cantidad);
+    agregarElemArr(items);
+    cargarPedido(items);
 }
 
 function agregarPedidoRandom(){
@@ -67,8 +81,7 @@ function agregarElemArr (pedido){
 
 /////////// TABLA DE PEDIDOS //////////////
 
-let pedidosJson =  new Array();
-document.addEventListener("load", cargarTabla());
+
 
 function cargarTabla() {
     cargarJson();
@@ -139,7 +152,7 @@ function filtroTabla()
     
 }
 
-document.addEventListener("load", filtroTabla());
+//document.addEventListener("load", filtroTabla());
 
 /////////// FIN TABLA DE PEDIDOS //////////////
 
@@ -173,8 +186,8 @@ function verCaptcha(n1,n2,n3) {
 
 /////////// VALIDACION DE FORMULARIO //////////////
 document.addEventListener("load", IDpedido.reset()); /*Limpia el formulario cada vez que se cargue la pagina*/
-let btnenviar = document.getElementById("botonenviar");
-btnenviar.addEventListener("click", validar); 
+let btnenviar = document.getElementById('botonenviar');
+btnenviar.addEventListener('click', validar); 
 
 function validar(){ 
     var IDcalle= document.getElementById("IDcalle").value;

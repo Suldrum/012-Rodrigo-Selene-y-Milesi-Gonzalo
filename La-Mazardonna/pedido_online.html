@@ -26,7 +26,7 @@
         </header>
 
         <h1>Pedidos ON-line</h1>
-        <form id="IDpedido" action="registro" onsubmit="return validar()">
+        <form id="IDpedido">
             <div class="divPresentacion">      
                 <div class="divForm">
                     <label for="calle">Calle: </label>
@@ -49,21 +49,21 @@
                 </div>
                 <div id="formPedido">
                     <div class="divPedido">
-                        <label id="IDproducto" for="agregarProducto">Producto: </label>
-                        <select>
-                                <option value="0">---</option>
-                                <option value="pizzaMuza">Pizza Muzarella</option>
-                                <option value="pizzaNapo">Pizza Napolitana</option>
-                                <option value="empCarne">Empanada Carne</option>
-                                <option value="empJyQ">Empanada JyQ</option>
+                        <label  for="agregarProducto">Producto: </label>
+                        <select id="IDproducto" type="select" >
+                                <option value="Nada">---</option>
+                                <option value="Pizza Muzarella">Pizza Muzarella</option>
+                                <option value="Pizza Napolitana">Pizza Napolitana</option>
+                                <option value="Empanada Carne">Empanada Carne</option>
+                                <option value="Empanada JyQ">Empanada JyQ</option>
                         </select>
                         <label for="cantidad">Cantidad: </label>
-                        <input type="number" value="1" min="1" max="99" maxlength="2" step="1"> 
+                        <input id="IDcantidad" type="number" value="1" min="1" max="99" maxlength="2" step="1"> 
                     </div>
                     <div class="divPedido">
-                        <button>Agregar</button> 
-                        <button>Agregar 3 random</button> 
-                        <button>Borrar pedido</button> 
+                        <input id="btnAgregar" type="button" value="Agregar"> 
+                        <input id="btnAgregarRandom" type="button" value="Agregar 3 random"> 
+                        <input id="btnBorrarTabla" type="button" value="Borrar pedido"> 
                     </div> 
                     <table id="tablaPedido">
                         <thead>
@@ -74,6 +74,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            
                         </tbody>
                     </table>
                 </div>
@@ -87,7 +88,7 @@
                 </p>
                 <input type="number" name="" id="captchaintroducido">
 
-                <input id="botonenviar" type="button" value="Pedir" /> 
+                <input id="botonenviar" type="button" value="Pedir"> 
             </div>
         </form>
 
@@ -116,9 +117,6 @@
         </footer>
 
         <script type="text/javascript" src="js/script.js"></script>
-    
 
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"> </script>
     </body>
 </html>
