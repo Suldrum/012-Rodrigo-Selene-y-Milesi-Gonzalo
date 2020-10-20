@@ -26,7 +26,7 @@ let btnBorrarTabla = document.getElementById('btnBorrarTabla');
 
 btnAgregarPedido.addEventListener('click', agregarNuevoPedido);
 btnAgregarRandom.addEventListener('click', agregarPedidoRandom());
-//btnBorrarTabla.addEventListener('click', borrarTabla);
+btnBorrarTabla.addEventListener('click', borrarTabla);
 
 
 /*function agregarValor (producto, cantidad)
@@ -51,8 +51,13 @@ function agregarPedidoRandom(){
 
 function borrarTabla(){
     var tabla = document.getElementById("tablaPedido");
-    tabla.deleteRow(0);
-    
+    var cantFilas = tabla.rows.length - 1;
+    while (cantFilas > 0)
+    {
+        tabla.deleteRow(cantFilas);
+        cantFilas= cantFilas - 1;
+    }
+  
 }
 //ARREGLO JSON//
 
