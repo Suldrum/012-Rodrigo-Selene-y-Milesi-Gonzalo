@@ -65,7 +65,9 @@ function cargarJson()
 {
 
     var pedidos = [
+       { "producto": "Empanada de carne", "cantidad": 2, "precio":  0}, 
        { "producto": "Empanada de carne", "cantidad": 2, "precio":  0},
+       { "producto": "Pizza Muzarella", "cantidad": 3, "precio":  300},
         { "producto": "Empanada de jamon", "cantidad": 1, "precio":  0}]; 
     
         for(var i in pedidos) {    
@@ -130,6 +132,8 @@ function borrarPedido(fila)
 {
     var tabla = document.getElementById("tablaPedido");
     tabla.removeChild(fila);
+
+    //tabla.deleteRow(posFila);
 }
 
 function editarPedido(fila){
@@ -138,28 +142,37 @@ function editarPedido(fila){
 }
 
 
-function filtroTabla()
+function filtroTabla(busqueda)
 {
-    var contenidoFiltrado= new Array();
-    for(var i in pedidosJson) {      
-        var item = pedidosJson[i];
-       if (item.producto.searchString("Empanada"))
-       {
-            contenidoFiltrado.push (item);
-       }
-    
+    //desaparece las filas que no sea contengan lo buscado
+    var tabla = document.getElementById("tablaPedido");
+// var busqueda = "empanada";
+//var busqueda = "pizza";
+        var cellsOfRow="";
+        var found=false;
+        var compareWith="";
+        for (var i = 1; i < tabla.rows.length; i++) {
+            cellsOfRow = tabla.rows[i].getElementsByTagName('td');
+            found = false;
+            for (var j = 0; j < cellsOfRow.length && !found; j++) { 
+                compareWith = cellsOfRow[j].innerHTML.toLowerCase(); 
+                if (busqueda.length == 0 || (compareWith.indexOf(busqueda) > -1))
+                {
+                    found = true;
+                }
+            }
+            if(found)
+            {
+                tabla.rows[i].style.display = '';
+            } else {
+                tabla.rows[i].style.display = 'none';
+            }
+        }
 
-    }
-
-    for(var i in contenidoFiltrado) {      
-       
-        console.log(contenidoFiltrado[i].producto);
-
-    }
     
 }
-
-//document.addEventListener("load", filtroTabla());
+let busqueda = "";
+document.addEventListener("load", filtroTabla(busqueda));
 
 /////////// FIN TABLA DE PEDIDOS //////////////
 
