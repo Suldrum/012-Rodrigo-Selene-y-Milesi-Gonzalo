@@ -6,6 +6,15 @@ const gitURL = 'https:///github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo'
 //BOTON MENU NAV
 
 let btnmenu = document.getElementById('btnNav');
+window.addEventListener('resize', reajustar);
+
+function reajustar(){
+    if (window.innerWidth >= 706.05){
+        document.getElementById("listaNav").style.display = "flex";
+    }else{
+        document.getElementById("listaNav").style.display = "none";
+    }
+}
 
 function  MostrarNav(){
     var listaMenu = document.getElementById("listaNav");
@@ -235,8 +244,6 @@ document.addEventListener("load", crearCaptcha());
 
 function verCaptcha(n1,n2,n3) {    
 //les digo que numero deben poner al cambiar el captcha
-        
-    console.log(n1,n2,n3);
     document.getElementById("num1").src = "js/imgcaptcha/" + n1+".png";
     document.getElementById("num2").src = "js/imgcaptcha/" + n2+".png";
     document.getElementById("num3").src = "js/imgcaptcha/" + n3+".png";

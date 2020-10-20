@@ -13,14 +13,16 @@
 
         <header>
             <nav class="Fmenu">
-                <img class="imgmenu" src="imagenes/logo.jpg" alt="">
-                <div class="menuNavegacion">
-                    <button id="btnNav"> <i class="fa fa-chevron-circle-down"></i></button>
-                    <li id="listaNav">
-                        <ul><a class='navegacion' href="index.html">Home</a> </ul>
-                        <ul><a class='navegacion' href="menu.html">Menu</a> </ul>
-                        <ul><a class='navegacion' href="pedido_online.html">Pedi ya!</a></ul>
-                    </li>
+                <button id="btnNav"> <i class="fa fa-chevron-circle-down"></i></button>
+                <div class="divNav">
+                    <img class="imgmenu" src="imagenes/logo.jpg" alt="">
+                    <div class="menuNavegacion">
+                        <li id="listaNav">
+                            <ul><a class='navegacion' href="index.html">Home</a> </ul>
+                            <ul><a class='navegacion' href="menu.html">Menu</a> </ul>
+                            <ul><a class='navegacion' href="pedido_online.html">Pedi ya!</a></ul>
+                        </li>
+                    </div>    
                 </div>          
             </nav>   
         </header>
@@ -49,8 +51,8 @@
                 </div>
                 <div id="formPedido">
                     <div class="divPedido">
-                        <label>Producto: </label>
-                        <select id="IDproducto" type="select">
+                        <label  for="agregarProducto">Producto: </label>
+                        <select id="IDproducto">
                                 <option value="Nada">---</option>
                                 <option value="Pizza Muzarella">Pizza Muzarella</option>
                                 <option value="Pizza Napolitana">Pizza Napolitana</option>
