@@ -142,7 +142,7 @@ function editarPedido(fila){
 }
 
 
-
+/*
 function cumpleFiltro(fila, busqueda)
 {
     //verifica si la fila contiene lo buscado en alguna de sus columnas
@@ -155,15 +155,24 @@ function cumpleFiltro(fila, busqueda)
     }
     return false;
 }
+*/
+function cumpleFiltro(columna, busqueda)
+{
+    //verifica si cumple con el criterio
+    var compareWith = columna.innerHTML.toLowerCase(); 
+    if (busqueda.length == 0 || (compareWith.indexOf(busqueda) > -1))
+        return true;
+    return false;
+        
+}
 
-
-function filtroTabla(busqueda)
+function filtroTabla(busqueda,columna)
 {
     //desaparece las filas que no sea contengan lo buscado
     var tabla = document.getElementById("tablaPedido");
         for (var i = 1; i < tabla.rows.length; i++) {
             var cellsOfRow = tabla.rows[i].getElementsByTagName('td');
-            var found = cumpleFiltro(cellsOfRow,busqueda);
+            var found = cumpleFiltro(cellsOfRow[columna],busqueda);
             if(found)
             {
                 tabla.rows[i].style.display = '';
@@ -171,11 +180,17 @@ function filtroTabla(busqueda)
                 tabla.rows[i].style.display = 'none';
             }
         }
-
-    
 }
-let busqueda = "";
-document.addEventListener("load", filtroTabla(busqueda));
+
+function filtrarProductos()
+{
+    var columna = 0;  
+    //manda por parametro el "tipo" de producto, la columna donde estan y el estilo, lo del estilo no esta hecho por lo que no tiene cabecera aun
+    //filtroTabla("empanada",columna);
+    filtroTabla("pizza",columna);
+}
+
+document.addEventListener("load", filtrarProductos());
 
 /////////// FIN TABLA DE PEDIDOS //////////////
 
