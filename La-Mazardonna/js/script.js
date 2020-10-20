@@ -145,9 +145,9 @@ function editarPedido(fila){
 
 function cumpleFiltro(fila, busqueda)
 {
-    var compareWith="";
+    //verifica si la fila contiene lo buscado en alguna de sus columnas
     for (var j = 0; j < fila.length; j++) { 
-        compareWith = fila[j].innerHTML.toLowerCase(); 
+        var compareWith = fila[j].innerHTML.toLowerCase(); 
         if (busqueda.length == 0 || (compareWith.indexOf(busqueda) > -1))
         {
             return true;
@@ -161,9 +161,8 @@ function filtroTabla(busqueda)
 {
     //desaparece las filas que no sea contengan lo buscado
     var tabla = document.getElementById("tablaPedido");
-        var cellsOfRow="";
         for (var i = 1; i < tabla.rows.length; i++) {
-            cellsOfRow = tabla.rows[i].getElementsByTagName('td');
+            var cellsOfRow = tabla.rows[i].getElementsByTagName('td');
             var found = cumpleFiltro(cellsOfRow,busqueda);
             if(found)
             {
