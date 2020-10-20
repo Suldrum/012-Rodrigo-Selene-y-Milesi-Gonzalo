@@ -26,7 +26,7 @@ let btnBorrarTabla = document.getElementById('btnBorrarTabla');
 
 btnAgregarPedido.addEventListener('click', agregarNuevoPedido);
 btnAgregarRandom.addEventListener('click', agregarPedidoRandom());
-btnBorrarTabla.addEventListener('click', borrarTabla());
+//btnBorrarTabla.addEventListener('click', borrarTabla);
 
 
 /*function agregarValor (producto, cantidad)
@@ -50,6 +50,8 @@ function agregarPedidoRandom(){
 }
 
 function borrarTabla(){
+    var tabla = document.getElementById("tablaPedido");
+    tabla.deleteRow(0);
     
 }
 //ARREGLO JSON//
@@ -113,10 +115,10 @@ function cargarTabla() {
     // Finalmente agregamos la fila al cuerpo de la tabla
     tabla.appendChild(fila);
 
-    /*
+    
     // modifica el atributo "border" de la tabla y lo fija a "2";
      tabla.setAttribute("border", "2");
-    */
+    
 }
 
 function borrarPedido(fila)
