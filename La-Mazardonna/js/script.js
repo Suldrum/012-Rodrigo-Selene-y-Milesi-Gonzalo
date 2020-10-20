@@ -25,29 +25,83 @@ let btnAgregarRandom = document.getElementById('btnAgregarRandom');
 let btnBorrarTabla = document.getElementById('btnBorrarTabla');
 
 btnAgregarPedido.addEventListener('click', agregarNuevoPedido);
-btnAgregarRandom.addEventListener('click', agregarPedidoRandom());
+btnAgregarRandom.addEventListener('click', agregarPedidoRandom);
 btnBorrarTabla.addEventListener('click', borrarTabla);
 
 
-/*function agregarValor (producto, cantidad)
-    let total = 10;
-    return total;
-*/
+function calcularValor (producto, cantidad){
+    var precio = 0;
+    switch(producto){
+        case "Pizza Muzarella":
+            precio = 100;
+            break; 
+        case "Pizza Napolitana":
+            precio = 125;
+            break;     
+        case "Empanada Carne":
+            precio = 40;
+            break; 
+        case "Empanada JyQ":
+            precio = 40;
+            break;   
+    }
+    var total = precio * cantidad ;
+    return total; 
+}
+
 function agregarNuevoPedido(){
+    var compareWith = "Nada";
     var inputProducto = document.querySelector('#IDproducto').value;
     var inputCantidad = parseInt(document.querySelector('#IDcantidad').value);
-    var items = 
-        {   "producto": inputProducto, 
-            "cantidad": inputCantidad, 
-            "precio":  22};//agregarValor(inputProducto,inputCantidad)}]; 
-    console.log(items.cantidad);
-    agregarElemArr(items);
-    cargarPedido(items);
+    if (!(compareWith.indexOf(inputProducto) == 0) && (inputCantidad > 0)){
+        var total = calcularValor(inputProducto,inputCantidad);
+        var items = 
+            {   "producto": inputProducto, 
+                "cantidad": inputCantidad, 
+                "precio":  total}; 
+        agregarElemArr(items);
+        cargarPedido(items);
+    } 
+}
+
+function generarProducto(){
+    var aux =  Math.floor((Math.random()*4) );
+    var producto = '';
+    switch(aux){
+        case 0:
+            return producto = "Pizza Muzarella";
+        case 1:
+            return producto = "Pizza Napolitana";    
+        case 2:
+            return producto = "Empanada Carne";
+        case 3:
+            return producto = "Empanada JyQ";  
+    }
+}
+
+function generarCantidad(producto){
+    var compareWith = "pizza";
+    var cantidad;
+    if (compareWith.localeCompare(producto) < 1){
+        return cantidad = Math.floor((Math.random()*3+1) );
+    }else{
+        return cantidad = Math.floor((Math.random()*12+1) );
+    }
 }
 
 function agregarPedidoRandom(){
-    
-}
+    for (var i = 0; i < 3 ; i++){
+        var productoRandom = generarProducto();
+        var cantidadRandom = generarCantidad(productoRandom);
+        var precio = calcularValor(productoRandom,cantidadRandom);
+        var items = 
+                {   "producto": productoRandom, 
+                    "cantidad": cantidadRandom, 
+                    "precio":  precio}; 
+        agregarElemArr(items);
+        cargarPedido(items);     
+    }               
+}                
 
 function borrarTabla(){
     var tabla = document.getElementById("tablaPedido");
@@ -65,10 +119,7 @@ function cargarJson()
 {
 
     var pedidos = [
-       { "producto": "Empanada de carne", "cantidad": 2, "precio":  0}, 
-       { "producto": "Empanada de carne", "cantidad": 2, "precio":  0},
-       { "producto": "Pizza Muzarella", "cantidad": 3, "precio":  300},
-        { "producto": "Empanada de jamon", "cantidad": 1, "precio":  0}]; 
+        { "producto": "Empanada de jamon", "cantidad": 2, "precio":  0}]; 
     
         for(var i in pedidos) {    
         
@@ -125,37 +176,11 @@ function cargarTabla() {
     
     // modifica el atributo "border" de la tabla y lo fija a "2";
      tabla.setAttribute("border", "2");
-    
-}
-
-function borrarPedido(fila)
-{
-    var tabla = document.getElementById("tablaPedido");
-    tabla.removeChild(fila);
-
-    //tabla.deleteRow(posFila);
-}
-
-function editarPedido(fila){
-    //devolveria los valores de la fila a donde se ingresan, al darle a confirmar los modifica en la misma fila?
-    
+     document.addEventListener("load", filtrarProductos());    
 }
 
 
-/*
-function cumpleFiltro(fila, busqueda)
-{
-    //verifica si la fila contiene lo buscado en alguna de sus columnas
-    for (var j = 0; j < fila.length; j++) { 
-        var compareWith = fila[j].innerHTML.toLowerCase(); 
-        if (busqueda.length == 0 || (compareWith.indexOf(busqueda) > -1))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-*/
+
 function cumpleFiltro(columna, busqueda)
 {
     //verifica si cumple con el criterio
@@ -166,7 +191,7 @@ function cumpleFiltro(columna, busqueda)
         
 }
 
-function filtroTabla(busqueda,columna)
+function filtroTabla(busqueda,columna, color)
 {
     //desaparece las filas que no sea contengan lo buscado
     var tabla = document.getElementById("tablaPedido");
@@ -175,9 +200,7 @@ function filtroTabla(busqueda,columna)
             var found = cumpleFiltro(cellsOfRow[columna],busqueda);
             if(found)
             {
-                tabla.rows[i].style.display = '';
-            } else {
-                tabla.rows[i].style.display = 'none';
+                tabla.rows[i].style.color = color ;
             }
         }
 }
@@ -186,8 +209,8 @@ function filtrarProductos()
 {
     var columna = 0;  
     //manda por parametro el "tipo" de producto, la columna donde estan y el estilo, lo del estilo no esta hecho por lo que no tiene cabecera aun
-    //filtroTabla("empanada",columna);
-    filtroTabla("pizza",columna);
+    filtroTabla("empanada",columna, 'green');
+    filtroTabla("pizza",columna, 'red');
 }
 
 document.addEventListener("load", filtrarProductos());
@@ -246,7 +269,3 @@ function validar(){
     }
 /////////// FIN DE VALIDACION DE FORMULARIO //////////////
 }
-   
- 
-
-
