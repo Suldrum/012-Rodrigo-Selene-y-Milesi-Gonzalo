@@ -1,7 +1,7 @@
 "use strict";
 
-const gitURL = 'https:///github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo';
-
+const url = "http://web-unicen.herokuapp.com/api/groups/2-hernandezFLoberia/TPE3corador/";
+let pedidosJson =  new Array();
 
 //BOTON MENU NAV
 
@@ -26,8 +26,8 @@ function  MostrarNav(){
 
 btnmenu.addEventListener("click", MostrarNav);
 
-let pedidosJson =  new Array();
 document.addEventListener("load", cargarTabla());
+
 //BOTONES TABLA DINAMICA//
 let btnAgregarPedido = document.getElementById('btnAgregar');
 let btnAgregarRandom = document.getElementById('btnAgregarRandom');
@@ -122,22 +122,7 @@ function borrarTabla(){
     }
   
 }
-//ARREGLO JSON//
 
-function cargarJson()
-{
-
-    var pedidos = [
-        { "producto": "Empanada de jamon", "cantidad": 2, "precio":  0}]; 
-    
-        for(var i in pedidos) {    
-        
-            var item = pedidos[i];   
-            agregarElemArr(item);
-            
-        }
-
-}
 
 function agregarElemArr (pedido){
     pedidosJson.push({ 
@@ -153,12 +138,23 @@ function agregarElemArr (pedido){
 
 
 function cargarTabla() {
-    cargarJson();
-    for(var i in pedidosJson) {      
-        var item = pedidosJson[i];
-        cargarPedido(item); 
-
-    }
+    fetch(url)
+    .then(function(respuesta){
+        if(respuesta.ok) {
+            return respuesta.json();
+        }
+        else {
+            alert("Ha ocurrido un error al cargar la tabla. :(");
+        }
+    })
+    .then(function(herukoJson){
+       herukoJson.TPE3corador.forEach(function(A){
+       pedidosJson.push(A.thing);
+       //cargarPedido(pedidos.thing);
+       })
+    })
+    .catch(function(error) {console.log(error)})
+ 
 }
 
   function cargarPedido(nuevoPedido) {
@@ -202,7 +198,7 @@ function cumpleFiltro(columna, busqueda)
 
 function filtroTabla(busqueda,columna, color)
 {
-    //desaparece las filas que no sea contengan lo buscado
+    //"desaparece" las filas que no sea contengan lo buscado
     var tabla = document.getElementById("tablaPedido");
         for (var i = 1; i < tabla.rows.length; i++) {
             var cellsOfRow = tabla.rows[i].getElementsByTagName('td');
@@ -217,7 +213,7 @@ function filtroTabla(busqueda,columna, color)
 function filtrarProductos()
 {
     var columna = 0;  
-    //manda por parametro el "tipo" de producto, la columna donde estan y el estilo, lo del estilo no esta hecho por lo que no tiene cabecera aun
+    //manda por parametro el "tipo" de producto, la columna donde estan y el estilo
     filtroTabla("empanada",columna, 'green');
     filtroTabla("pizza",columna, 'red');
 }
