@@ -1,11 +1,10 @@
 "use strict";
-
+//Repositorio del trabajo
 const gitURL = "https://github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo";
-
+//Pagina de alojamiento del json
 const url = "https://web-unicen.herokuapp.com/api/groups/012-Rodrigo-Selene-y-Milesi-Gonzalo/pedidos";
-let pedidosJson =  new Array();
 
-//BOTON MENU NAV
+//////////////BOTON MENU NAV ////////////////////////////////////
 
 let btnmenu = document.getElementById('btnNav');
 window.addEventListener('resize', reajustar);
@@ -29,6 +28,8 @@ function  MostrarNav(){
 btnmenu.addEventListener("click", MostrarNav);
 
 document.addEventListener("load", cargarTabla());
+
+////////////// FIN BOTON MENU NAV ////////////////////////////////////
 
 //BOTONES TABLA DINAMICA//
 let btnAgregarPedido = document.getElementById('btnAgregar');
@@ -76,6 +77,8 @@ function agregarNuevoPedido(){
 }
 
 function generarProducto(){
+//Get random via heroku?
+
     var aux =  Math.floor((Math.random()*4) );
     var producto = '';
     switch(aux){
@@ -92,7 +95,7 @@ function generarProducto(){
 
 function generarCantidad(producto){
     var compareWith = "pizza";
-    var cantidad;
+    var cantidad=0;
     if (compareWith.localeCompare(producto) < 1){
         return cantidad = Math.floor((Math.random()*3+1) );
     }else{
@@ -296,5 +299,5 @@ function validar(){
         }
         crearCaptcha();
     }
-/////////// FIN DE VALIDACION DE FORMULARIO //////////////
+/////////// FIN VALIDACION DE FORMULARIO //////////////
 }
