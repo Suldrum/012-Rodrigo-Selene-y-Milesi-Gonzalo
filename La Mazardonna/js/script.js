@@ -26,12 +26,12 @@ function  MostrarNav(){
 }
 
 btnmenu.addEventListener("click", MostrarNav);
-
 document.addEventListener("load", cargarTabla());
 
 ////////////// FIN BOTON MENU NAV ////////////////////////////////////
 
-//BOTONES TABLA DINAMICA//
+////////////////// BOTONES TABLA DINAMICA /////////////////////////
+
 let btnAgregarPedido = document.getElementById('btnAgregar');
 let btnAgregarRandom = document.getElementById('btnAgregarRandom');
 let btnBorrarTabla = document.getElementById('btnBorrarTabla');
@@ -40,7 +40,59 @@ btnAgregarPedido.addEventListener('click', agregarNuevoPedido);
 btnAgregarRandom.addEventListener('click', agregarPedidoRandom);
 btnBorrarTabla.addEventListener('click', borrarTabla);
 
+////////////////// FIN BOTONES TABLA DINAMICA /////////////////////////
 
+////////////////// FUNCIONES DE CARGA /////////////////////////
+
+//Esta funcion trae la informacion en el Heroku y la manda a la tabla
+function cargarTabla() {
+    fetch(url)
+    .then(function(respuesta){
+        if(respuesta.ok) {
+            return respuesta.json();
+        }
+        else {
+            alert("Ha ocurrido un error al cargar la tabla. :(");
+        }
+    })
+    .then(function(herukoJson){
+        console.log(herukoJson);
+       herukoJson.pedidos.forEach(function(pedido){
+       cargarPedido(pedido.thing);
+       })
+    })
+    .catch(function(error) {console.log(error)})
+    
+}
+
+//Esta funcion carga a la tabla un nuevo pedido.
+  function cargarPedido(nuevoPedido) {
+    // Recibe la direccion de la tabla y crea una fila siempre al final
+    var tabla = document.getElementById("tablaPedido");
+    var fila = tabla.insertRow(-1);
+
+    /// El td del producto
+    var producto = document.createElement("td");
+    producto.textContent =nuevoPedido.producto; // el textContent del td es el producto
+    fila.appendChild(producto);
+    // El td del cantidad
+    var cantidad = document.createElement("td");
+    cantidad.textContent =nuevoPedido.cantidad ; // el textContent del td es el cantidad
+    fila.appendChild(cantidad);
+    // El td del precio
+    var precio = document.createElement("td");
+    precio.textContent =nuevoPedido.precio; // el textContent del td es el precio
+    fila.appendChild(precio);
+    // Finalmente agregamos la fila al cuerpo de la tabla
+    tabla.appendChild(fila);
+    
+    // modifica el atributo "border" de la tabla y lo fija a "2";
+     tabla.setAttribute("border", "2");
+     document.addEventListener("load", filtrarProductos());    
+}
+////////////////// FIN FUNCIONES DE CARGA /////////////////////////
+
+////////////////// FUNCIONES DE CALCULO /////////////////////////
 function calcularValor (producto, cantidad){
     var precio = 0;
     switch(producto){
@@ -60,20 +112,42 @@ function calcularValor (producto, cantidad){
     var total = precio * cantidad ;
     return total; 
 }
+////////////////// FIN FUNCIONES DE CALCULO /////////////////////////
 
-function agregarNuevoPedido(){
-    var compareWith = "Nada";
-    var inputProducto = document.querySelector('#IDproducto').value;
-    var inputCantidad = parseInt(document.querySelector('#IDcantidad').value);
-    if (!(compareWith.indexOf(inputProducto) == 0) && (inputCantidad > 0)){
-        var total = calcularValor(inputProducto,inputCantidad);
-        var items = 
-            {   "producto": inputProducto, 
-                "cantidad": inputCantidad, 
-                "precio":  total}; 
-        agregarAlHeruku(items);
-        cargarPedido(items);
-    } 
+////////////////// FUNCIONES DE AGREGAR /////////////////////////
+
+function agregarAlHeruku (pedido){
+    let pedidoNuevo = {
+        'thing': {
+            'producto': pedido.producto,
+            'cantidad': pedido.cantidad,
+            'precio': pedido.precio
+        }
+    }
+
+    // Escribe el objeto en el JSON del servidor
+    fetch((url), {
+        'method': 'POST',
+        'headers': {
+            'content-type': 'application/JSON'
+        },
+        'mode': 'cors',
+        'body': JSON.stringify(pedidoNuevo)
+    })
+        .then(function (respuesta) {
+            if (respuesta.ok) {
+                // console.log(respuesta);
+                return respuesta.json();
+            }
+            else {
+                alert("La solicitud al servidor falló.");
+            }
+        })
+        .then(function (herukoJson) {
+            let contenedor = document.querySelector("#result");
+            contenedor.innerHTML = JSON.stringify(herukoJson);
+            
+        })
 }
 
 function generarProducto(){
@@ -117,6 +191,24 @@ function agregarPedidoRandom(){
     }               
 }                
 
+function agregarNuevoPedido(){
+    var compareWith = "Nada";
+    var inputProducto = document.querySelector('#IDproducto').value;
+    var inputCantidad = parseInt(document.querySelector('#IDcantidad').value);
+    if (!(compareWith.indexOf(inputProducto) == 0) && (inputCantidad > 0)){
+        var total = calcularValor(inputProducto,inputCantidad);
+        var items = 
+            {   "producto": inputProducto, 
+                "cantidad": inputCantidad, 
+                "precio":  total}; 
+        agregarAlHeruku(items);
+        cargarPedido(items);
+    } 
+}
+////////////////// FIN FUNCIONES DE AGREGAR /////////////////////////
+
+
+
 function borrarTabla(){
     var tabla = document.getElementById("tablaPedido");
     var cantFilas = tabla.rows.length - 1;
@@ -129,91 +221,14 @@ function borrarTabla(){
 }
 
 
-function agregarAlHeruku (pedido){
-    let pedidoNuevo = {
-        'thing': {
-            'producto': pedido.producto,
-            'cantidad': pedido.cantidad,
-            'precio': pedido.precio
-        }
-    }
 
-    // Escribe el objeto en el JSON del servidor
-    fetch((url), {
-        'method': 'POST',
-        'headers': {
-            'content-type': 'application/JSON'
-        },
-        'mode': 'cors',
-        'body': JSON.stringify(pedidoNuevo)
-    })
-        .then(function (respuesta) {
-            if (respuesta.ok) {
-                // console.log(respuesta);
-                return respuesta.json();
-            }
-            else {
-                alert("La solicitud al servidor falló.");
-            }
-        })
-        .then(function (herukoJson) {
-            let contenedor = document.querySelector("#result");
-            contenedor.innerHTML = JSON.stringify(herukoJson);
-            
-        })
-}
+
 
 
 /////////// TABLA DE PEDIDOS //////////////
 
-function cargarTabla() {
-    fetch(url)
-    .then(function(respuesta){
-        if(respuesta.ok) {
-            return respuesta.json();
-        }
-        else {
-            alert("Ha ocurrido un error al cargar la tabla. :(");
-        }
-    })
-    .then(function(herukoJson){
-        console.log(herukoJson);
-       herukoJson.pedidos.forEach(function(pedido){
-       cargarPedido(pedido.thing);
-       })
-    })
-    .catch(function(error) {console.log(error)})
-    
-}
 
-  function cargarPedido(nuevoPedido) {
-    // Recibe la direccion de la tabla y crea una fila siempre al final
-
-    var tabla = document.getElementById("tablaPedido");
-    var fila = tabla.insertRow(-1);
-
-    /// El td del producto
-    var producto = document.createElement("td");
-    producto.textContent =nuevoPedido.producto; // el textContent del td es el producto
-    fila.appendChild(producto);
-    // El td del cantidad
-    var cantidad = document.createElement("td");
-    cantidad.textContent =nuevoPedido.cantidad ; // el textContent del td es el cantidad
-    fila.appendChild(cantidad);
-    // El td del precio
-    var precio = document.createElement("td");
-    precio.textContent =nuevoPedido.precio; // el textContent del td es el precio
-    fila.appendChild(precio);
-    // Finalmente agregamos la fila al cuerpo de la tabla
-    tabla.appendChild(fila);
-
-    
-    // modifica el atributo "border" de la tabla y lo fija a "2";
-     tabla.setAttribute("border", "2");
-     document.addEventListener("load", filtrarProductos());    
-}
-
-
+/////////// FILTROS TABLA DE PEDIDOS //////////////
 
 function cumpleFiltro(columna, busqueda)
 {
@@ -234,7 +249,7 @@ function filtroTabla(busqueda,columna, color)
             var found = cumpleFiltro(cellsOfRow[columna],busqueda);
             if(found)
             {
-                tabla.rows[i].style.color = color ;
+                tabla.rows[i].style.color = color ; //si se cambia por .style = "none" desaparece, vuelve innecesario el color
             }
         }
 }
@@ -248,6 +263,7 @@ function filtrarProductos()
 }
 
 document.addEventListener("load", filtrarProductos());
+/////////// FIN FILTROS TABLA DE PEDIDOS //////////////
 
 /////////// FIN TABLA DE PEDIDOS //////////////
 
