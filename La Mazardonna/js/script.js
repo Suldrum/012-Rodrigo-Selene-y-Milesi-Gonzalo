@@ -163,8 +163,6 @@ function agregarAlHeruku (pedido){
 
 /////////// TABLA DE PEDIDOS //////////////
 
-
-
 function cargarTabla() {
     fetch(url)
     .then(function(respuesta){
@@ -177,9 +175,8 @@ function cargarTabla() {
     })
     .then(function(herukoJson){
         console.log(herukoJson);
-       herukoJson.forEach(function(A){
-       //pedidosJson.push(A.thing);
-       cargarPedido(pedidos.thing);
+       herukoJson.pedidos.forEach(function(pedido){
+       cargarPedido(pedido.thing);
        })
     })
     .catch(function(error) {console.log(error)})
