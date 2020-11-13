@@ -1,6 +1,8 @@
 "use strict";
 
-const url = "http://web-unicen.herokuapp.com/api/groups/2-hernandezFLoberia/TPE3corador/";
+const gitURL = "https://github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo";
+
+const url = "https://web-unicen.herokuapp.com/api/groups/012-Rodrigo-Selene-y-Milesi-Gonzalo/pedidos";
 let pedidosJson =  new Array();
 
 //BOTON MENU NAV
@@ -68,7 +70,7 @@ function agregarNuevoPedido(){
             {   "producto": inputProducto, 
                 "cantidad": inputCantidad, 
                 "precio":  total}; 
-        agregarElemArr(items);
+        agregarAlHeruku(items);
         cargarPedido(items);
     } 
 }
@@ -107,7 +109,7 @@ function agregarPedidoRandom(){
                 {   "producto": productoRandom, 
                     "cantidad": cantidadRandom, 
                     "precio":  precio}; 
-        agregarElemArr(items);
+        agregarAlHeruku(items);
         cargarPedido(items);     
     }               
 }                
@@ -120,16 +122,42 @@ function borrarTabla(){
         tabla.deleteRow(cantFilas);
         cantFilas= cantFilas - 1;
     }
-  
+  //eliminar AJAX
 }
 
 
-function agregarElemArr (pedido){
-    pedidosJson.push({ 
-        "producto" : pedido.producto,
-        "cantidad" : pedido.cantidad,
-        "precio"   : pedido.precio
-    });
+function agregarAlHeruku (pedido){
+    let pedidoNuevo = {
+        'thing': {
+            'producto': pedido.producto,
+            'cantidad': pedido.cantidad,
+            'precio': pedido.precio
+        }
+    }
+
+    // Escribe el objeto en el JSON del servidor
+    fetch((url), {
+        'method': 'POST',
+        'headers': {
+            'content-type': 'application/JSON'
+        },
+        'mode': 'cors',
+        'body': JSON.stringify(pedidoNuevo)
+    })
+        .then(function (respuesta) {
+            if (respuesta.ok) {
+                // console.log(respuesta);
+                return respuesta.json();
+            }
+            else {
+                alert("La solicitud al servidor falló.");
+            }
+        })
+        .then(function (herukoJson) {
+            let contenedor = document.querySelector("#result");
+            contenedor.innerHTML = JSON.stringify(herukoJson);
+            
+        })
 }
 
 
@@ -148,13 +176,14 @@ function cargarTabla() {
         }
     })
     .then(function(herukoJson){
-       herukoJson.TPE3corador.forEach(function(A){
-       pedidosJson.push(A.thing);
-       //cargarPedido(pedidos.thing);
+        console.log(herukoJson);
+       herukoJson.forEach(function(A){
+       //pedidosJson.push(A.thing);
+       cargarPedido(pedidos.thing);
        })
     })
     .catch(function(error) {console.log(error)})
- 
+    
 }
 
   function cargarPedido(nuevoPedido) {
