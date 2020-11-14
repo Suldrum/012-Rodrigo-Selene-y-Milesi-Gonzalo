@@ -89,17 +89,21 @@ function cargarTabla() {
         botones.appendChild(btnEditar);
         botones.appendChild(btnBorrar);
         fila.appendChild(botones);
-   */ 
-    var btnEditar = document.createElement("button");
-    var btnBorrar = document.createElement("button");
-    btnEditar.innerHTML = "Editar";
-    btnBorrar.innerHTML = "Borrar";
-    
+   */
   
-    fila.appendChild(btnEditar);
-    fila.appendChild(btnBorrar);
-    btnBorrar.addEventListener('click',borrarPedido);
+   //Crea el boton de editar, le asigna las propiedades
+    var btnEditar = document.createElement("button");
+    btnEditar.innerHTML = "Editar";
+    btnEditar.type = "button";
     btnEditar.addEventListener('click',editarPedido);
+    fila.appendChild(btnEditar);
+     //Crea el boton de borrar, le asigna las propiedades
+    var btnBorrar = document.createElement("button");
+    btnBorrar.innerHTML = "Borrar";
+    btnBorrar.type = "button";
+    btnBorrar.addEventListener('click',borrarPedido);
+    fila.appendChild(btnBorrar);
+    
     // Finalmente agregamos la fila al cuerpo de la tabla
     tabla.appendChild(fila);
     
