@@ -101,9 +101,8 @@ function cargarTabla() {
     var btnBorrar = document.createElement("button");
     btnBorrar.innerHTML = "Borrar";
     btnBorrar.type = "button";
-    btnBorrar.addEventListener('click',borrarPedido);
+   // btnBorrar.addEventListener('click',borrarPedido(fila));
     fila.appendChild(btnBorrar);
-    
     // Finalmente agregamos la fila al cuerpo de la tabla
     tabla.appendChild(fila);
     
@@ -167,7 +166,7 @@ function agregarAlHeruku (pedido){
         .then(function (herukoJson) {
             let contenedor = document.querySelector("#result");
             contenedor.innerHTML = JSON.stringify(herukoJson);
-            
+            cargarPedido(pedido);
         })
 }
 
@@ -208,7 +207,6 @@ function agregarPedidoRandom(){
                     "cantidad": cantidadRandom, 
                     "precio":  precio}; 
         agregarAlHeruku(items);
-        cargarPedido(items);     
     }               
 }                
 
@@ -223,7 +221,6 @@ function agregarNuevoPedido(){
                 "cantidad": inputCantidad, 
                 "precio":  total}; 
         agregarAlHeruku(items);
-        cargarPedido(items);
     } 
 }
 ////////////////// FIN FUNCIONES DE AGREGAR /////////////////////////
@@ -242,15 +239,13 @@ function borrarTabla(){
 
 
 
-
-
-
-
 }
 
-function borrarPedido()
+function borrarPedido(fila)
 {
     console.log("esto debe borrar");
+    var tabla = document.getElementById("tablaPedido");
+    tabla.removeChild(fila);
 }
 
 function editarPedido()
