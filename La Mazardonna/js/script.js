@@ -52,11 +52,11 @@ function cargarTabla() {
             return respuesta.json();
         }
         else {
-            alert("Ha ocurrido un error al cargar la tabla. :(");
+            alert("Error al acceder al Heroku");
         }
     })
     .then(function(herukoJson){
-        console.log(herukoJson);
+       // console.log(herukoJson);
        herukoJson.pedidos.forEach(function(pedido){
        cargarPedido(pedido.thing);
        })
@@ -83,12 +83,29 @@ function cargarTabla() {
     var precio = document.createElement("td");
     precio.textContent =nuevoPedido.precio; // el textContent del td es el precio
     fila.appendChild(precio);
+
+    var botones = document.createElement("td");
+    var btnEditar = document.createElement("button");
+    var btnBorrar = document.createElement("button");
+    btnEditar.innerHTML = "Editar";
+    btnBorrar.innerHTML = "Borrar";
+    botones.appendChild(btnEditar);
+    botones.appendChild(btnBorrar);
+    fila.appendChild(botones);
+  
+  /*  btnBorrar.addEventListener("click",function(){
+        borrarPersona(tabla,fila,id);
+    });
+*/
+    btnEditar.addEventListener('click',function(){
+       console.log(8888);
+    })
     // Finalmente agregamos la fila al cuerpo de la tabla
     tabla.appendChild(fila);
     
     // modifica el atributo "border" de la tabla y lo fija a "2";
      tabla.setAttribute("border", "2");
-     document.addEventListener("load", filtrarProductos());    
+     filtrarProductos();    
 }
 ////////////////// FIN FUNCIONES DE CARGA /////////////////////////
 
@@ -208,7 +225,6 @@ function agregarNuevoPedido(){
 ////////////////// FIN FUNCIONES DE AGREGAR /////////////////////////
 
 
-
 function borrarTabla(){
     var tabla = document.getElementById("tablaPedido");
     var cantFilas = tabla.rows.length - 1;
@@ -217,8 +233,17 @@ function borrarTabla(){
         tabla.deleteRow(cantFilas);
         cantFilas= cantFilas - 1;
     }
-  //eliminar AJAX
+ 
+    //eliminar AJAX
+
+
+
+
+
+
+
 }
+
 
 
 
@@ -262,7 +287,7 @@ function filtrarProductos()
     filtroTabla("pizza",columna, 'red');
 }
 
-document.addEventListener("load", filtrarProductos());
+
 /////////// FIN FILTROS TABLA DE PEDIDOS //////////////
 
 /////////// FIN TABLA DE PEDIDOS //////////////
