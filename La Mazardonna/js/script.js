@@ -93,12 +93,11 @@ function cargarTabla() {
     botones.appendChild(btnBorrar);
     fila.appendChild(botones);
   
-  /*  btnBorrar.addEventListener("click",function(){
-        borrarPersona(tabla,fila,id);
+    btnBorrar.addEventListener("click",function(){
+        console.log("esto debe borrar");
     });
-*/
     btnEditar.addEventListener('click',function(){
-       console.log(8888);
+        console.log("esto debe editar");
     })
     // Finalmente agregamos la fila al cuerpo de la tabla
     tabla.appendChild(fila);
