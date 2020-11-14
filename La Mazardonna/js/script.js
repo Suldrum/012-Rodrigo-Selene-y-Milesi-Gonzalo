@@ -84,21 +84,22 @@ function cargarTabla() {
     precio.textContent =nuevoPedido.precio; // el textContent del td es el precio
     fila.appendChild(precio);
 
-    var botones = document.createElement("td");
+    /* 
+        var botones = document.createElement("td");
+        botones.appendChild(btnEditar);
+        botones.appendChild(btnBorrar);
+        fila.appendChild(botones);
+   */ 
     var btnEditar = document.createElement("button");
     var btnBorrar = document.createElement("button");
     btnEditar.innerHTML = "Editar";
     btnBorrar.innerHTML = "Borrar";
-    botones.appendChild(btnEditar);
-    botones.appendChild(btnBorrar);
-    fila.appendChild(botones);
+    
   
-    btnBorrar.addEventListener("click",function(){
-        console.log("esto debe borrar");
-    });
-    btnEditar.addEventListener('click',function(){
-        console.log("esto debe editar");
-    })
+    fila.appendChild(btnEditar);
+    fila.appendChild(btnBorrar);
+    btnBorrar.addEventListener('click',borrarPedido);
+    btnEditar.addEventListener('click',editarPedido);
     // Finalmente agregamos la fila al cuerpo de la tabla
     tabla.appendChild(fila);
     
@@ -243,9 +244,15 @@ function borrarTabla(){
 
 }
 
+function borrarPedido()
+{
+    console.log("esto debe borrar");
+}
 
-
-
+function editarPedido()
+{
+    console.log("esto debe editar");
+}
 
 
 
