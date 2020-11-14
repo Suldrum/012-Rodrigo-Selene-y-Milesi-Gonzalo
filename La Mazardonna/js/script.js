@@ -95,13 +95,13 @@ function cargarTabla() {
     var btnEditar = document.createElement("button");
     btnEditar.innerHTML = "Editar";
     btnEditar.type = "button";
-    btnEditar.addEventListener('click',editarPedido);
+    btnEditar.addEventListener('click', function(){editarPedido();});
     fila.appendChild(btnEditar);
      //Crea el boton de borrar, le asigna las propiedades
     var btnBorrar = document.createElement("button");
     btnBorrar.innerHTML = "Borrar";
     btnBorrar.type = "button";
-   // btnBorrar.addEventListener('click',borrarPedido(fila));
+    btnBorrar.addEventListener('click', function(){borrarPedido(fila);});
     fila.appendChild(btnBorrar);
     // Finalmente agregamos la fila al cuerpo de la tabla
     tabla.appendChild(fila);
@@ -234,11 +234,6 @@ function borrarTabla(){
         tabla.deleteRow(cantFilas);
         cantFilas= cantFilas - 1;
     }
- 
-    //eliminar AJAX
-
-
-
 }
 
 function borrarPedido(fila)
