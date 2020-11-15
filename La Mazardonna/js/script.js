@@ -248,8 +248,7 @@ function editarPedido(fila)
 {
     console.log("esto debe editar");
    var tabla = document.getElementById("tablaPedido");
-   fila.contentEditable = "true";
-   fila.style.background = "white";
+   
    /* let valoresAnteriores =
         {
             'producto': fila.cellsOfRow,
@@ -257,6 +256,19 @@ function editarPedido(fila)
             'cantidad': colEMail.textContent
       };
     */
+      if (fila.contentEditable == "true")
+       {
+           fila.contentEditable = "false"
+           fila.style.background = "blue";;
+        } 
+      else
+        {fila.contentEditable = "true";
+        fila.style.background = "white";
+        //poner para revertir los cambios    
+    
+    } 
+
+
 }
 
 
