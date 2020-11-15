@@ -95,7 +95,7 @@ function cargarTabla() {
     var btnEditar = document.createElement("button");
     btnEditar.innerHTML = "Editar";
     btnEditar.type = "button";
-    btnEditar.addEventListener('click', function(){editarPedido();});
+    btnEditar.addEventListener('click', function(){editarPedido(fila);});
     fila.appendChild(btnEditar);
      //Crea el boton de borrar, le asigna las propiedades
     var btnBorrar = document.createElement("button");
@@ -234,18 +234,29 @@ function borrarTabla(){
         tabla.deleteRow(cantFilas);
         cantFilas= cantFilas - 1;
     }
+    
 }
 
 function borrarPedido(fila)
 {
-    console.log("esto debe borrar");
     var tabla = document.getElementById("tablaPedido");
-    tabla.removeChild(fila);
+    if (confirm("¿Seguro que desea eliminar?")) 
+   { tabla.removeChild(fila);}
 }
 
-function editarPedido()
+function editarPedido(fila)
 {
     console.log("esto debe editar");
+   var tabla = document.getElementById("tablaPedido");
+   fila.contentEditable = "true";
+   fila.style.background = "white";
+   /* let valoresAnteriores =
+        {
+            'producto': fila.cellsOfRow,
+            'precio': colApellido.textContent,
+            'cantidad': colEMail.textContent
+      };
+    */
 }
 
 
