@@ -4,9 +4,38 @@ const gitURL = "https://github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo";
 //Pagina de alojamiento del json
 const url = "https://web-unicen.herokuapp.com/api/groups/012-Rodrigo-Selene-y-Milesi-Gonzalo/pedidos";
 
+/*
+$(document).ready(function () {  
+    $.ajax({  
+        type: "POST",  
+        url: "JavaScript.aspx/GetData",  
+        contentType: "application/json; charset=utf-8",  
+        dataType: "json",  
+        success: function (response) {  
+            $("#contenedor").text(response.d);  
+        },  
+        failure: function (response) {  
+            alert(response.d);  
+        }  
+    });  
+});  
+
+*/
+/*
+function cargarContenedor(referenciaHTML)
+{
+   // event.preventDefault();
+    fetch(referenciaHTML).then(
+    function(response){
+    response.text().then(t =>
+    document.querySelector("#contenedor").innerHTML = t);
+    });
+}
+
+*/
 //////////////BOTON MENU NAV ////////////////////////////////////
 
-let btnmenu = document.getElementById('btnNav');
+//let btnmenu = document.getElementById('btnNav');
 window.addEventListener('resize', reajustar);
 
 function reajustar(){
@@ -16,7 +45,7 @@ function reajustar(){
         document.getElementById("listaNav").style.display = "none";
     }
 }
-
+/*
 function  MostrarNav(){
     var listaMenu = document.getElementById("listaNav");
     if (listaMenu.style.display == "none"){
@@ -24,8 +53,8 @@ function  MostrarNav(){
     }else
         listaMenu.style.display = "none";
 }
-
-btnmenu.addEventListener("click", MostrarNav);
+*/
+//btnmenu.addEventListener("click", MostrarNav);
 document.addEventListener("load", cargarTabla());
 
 ////////////// FIN BOTON MENU NAV ////////////////////////////////////
@@ -244,30 +273,62 @@ function borrarPedido(fila)
    { tabla.removeChild(fila);}
 }
 
+
+
+function guardarCambios(fila, valoresAnteriores)
+{
+    console.log("mi hora ha llegado");
+    valoresAnteriores
+    fila.children[0].contentEditable = "false";
+    fila.children[1].contentEditable = "false";
+    fila.children[0].style.background = "blue";
+    fila.children[1].style.background = "blue";
+    console.log(fila.children[0].innerHTML);
+    console.log(valoresAnteriores.producto);   
+    if ( (fila.children[0].innerHTML != valoresAnteriores.producto) || (fila.children[1].innerHTML != valoresAnteriores.cantidad))
+    {
+        console.log("son distintos por lo queee");
+        if (confirm("¿Seguro que alterar el pedido?"))
+        {
+            fila.children[2].innerHTML = calcularValor(fila.children[0].innerHTML, fila.children[1].innerHTML);
+            //Aca se debe subir la fila al heroku
+        }
+        else
+        {
+            fila.children[0].innerHTML= valoresAnteriores.producto;
+            fila.children[1].innerHTML= valoresAnteriores.cantidad;
+        }
+    }
+    var btnEditar = document.createElement("button");
+    btnEditar.innerHTML = "Editar";
+    btnEditar.type = "button";
+    btnEditar.addEventListener('click', function(){editarPedido(fila);});
+    fila.replaceChild(btnEditar,fila.children[3]);
+
+}
+
+
 function editarPedido(fila)
 {
     console.log("esto debe editar");
-   var tabla = document.getElementById("tablaPedido");
-   
-   /* let valoresAnteriores =
-        {
-            'producto': fila.cellsOfRow,
-            'precio': colApellido.textContent,
-            'cantidad': colEMail.textContent
-      };
-    */
-      if (fila.contentEditable == "true")
-       {
-           fila.contentEditable = "false"
-           fila.style.background = "blue";;
-        } 
-      else
-        {fila.contentEditable = "true";
-        fila.style.background = "white";
-        //poner para revertir los cambios    
-    
-    } 
+    let valoresAnteriores =
+    {
+        'producto': fila.children[0].innerHTML,
+        'cantidad': fila.children[1].innerHTML,
+        'total': fila.children[2].innerHTML
+    };
 
+    fila.children[0].contentEditable = "true";
+    fila.children[1].contentEditable = "true";
+    fila.children[0].style.background = "white";
+    fila.children[1].style.background = "white";
+
+    var btnGuardar = document.createElement("button");
+    btnGuardar.innerHTML = "Guardar";
+    btnGuardar.type = "button";
+    btnGuardar.addEventListener('click', function(){guardarCambios(fila, valoresAnteriores);});
+    fila.replaceChild(btnGuardar,fila.children[3]);
+    
 
 }
 
