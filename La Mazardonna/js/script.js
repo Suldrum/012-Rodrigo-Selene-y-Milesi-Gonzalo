@@ -277,28 +277,29 @@ function borrarPedido(fila)
 
 function guardarCambios(fila, valoresAnteriores)
 {
-    console.log("mi hora ha llegado");
-    valoresAnteriores
+//Las columnas dejan de permitir alteracion y se les ponen un fondo blanco para que quede mas claro
     fila.children[0].contentEditable = "false";
     fila.children[1].contentEditable = "false";
     fila.children[0].style.background = "blue";
     fila.children[1].style.background = "blue";
-    console.log(fila.children[0].innerHTML);
-    console.log(valoresAnteriores.producto);   
+    //Verifica si hubo cambios
     if ( (fila.children[0].innerHTML != valoresAnteriores.producto) || (fila.children[1].innerHTML != valoresAnteriores.cantidad))
     {
-        console.log("son distintos por lo queee");
+          //Si encuentra cambios pregunta si los quiere mantener
         if (confirm("¿Seguro que alterar el pedido?"))
         {
+            //Recalcula el precio
             fila.children[2].innerHTML = calcularValor(fila.children[0].innerHTML, fila.children[1].innerHTML);
             //Aca se debe subir la fila al heroku
         }
         else
         {
+            //Vuelve a los valores anteriores
             fila.children[0].innerHTML= valoresAnteriores.producto;
             fila.children[1].innerHTML= valoresAnteriores.cantidad;
         }
     }
+//Vuelve a poner el mismo boton que estaba antes, esto se hizo porque si solo modificabas el evento bucleaba
     var btnEditar = document.createElement("button");
     btnEditar.innerHTML = "Editar";
     btnEditar.type = "button";
@@ -310,25 +311,24 @@ function guardarCambios(fila, valoresAnteriores)
 
 function editarPedido(fila)
 {
-    console.log("esto debe editar");
+//Se guardan los valores viejos
     let valoresAnteriores =
     {
         'producto': fila.children[0].innerHTML,
         'cantidad': fila.children[1].innerHTML,
         'total': fila.children[2].innerHTML
     };
-
+//Las columnas se vuelven editables y se les ponen un fondo blanco para que quede mas claro
     fila.children[0].contentEditable = "true";
     fila.children[1].contentEditable = "true";
     fila.children[0].style.background = "white";
     fila.children[1].style.background = "white";
-
+//Se crea un boton que al apretarse confirma los cambios, este reemplaza el boton anterior
     var btnGuardar = document.createElement("button");
     btnGuardar.innerHTML = "Guardar";
     btnGuardar.type = "button";
     btnGuardar.addEventListener('click', function(){guardarCambios(fila, valoresAnteriores);});
     fila.replaceChild(btnGuardar,fila.children[3]);
-    
 
 }
 
