@@ -139,6 +139,30 @@ function cargarTabla() {
      tabla.setAttribute("border", "2");
      filtrarProductos();    
 }
+
+function cargarSelector(elegirProducto)
+{   
+    var producto = document.createElement("option");
+    producto.value = "Pizza Muzarella";
+    producto.innerHTML = "Pizza Muzarella";
+    elegirProducto.appendChild(producto);
+
+    var producto2 = document.createElement("option");
+    producto2.value = "Pizza Napolitana";
+    producto2.innerHTML = "Pizza Napolitana";
+    elegirProducto.appendChild(producto2);
+
+    var producto3 = document.createElement("option");
+    producto3.value = "Empanada Carne";
+    producto3.innerHTML = "Empanada Carne";
+    elegirProducto.appendChild(producto3);
+
+    var producto4 = document.createElement("option");
+    producto4.value = "Empanada JyQ";
+    producto4.innerHTML = "Empanada JyQ";
+    elegirProducto.appendChild(producto4);
+}
+
 ////////////////// FIN FUNCIONES DE CARGA /////////////////////////
 
 ////////////////// FUNCIONES DE CALCULO /////////////////////////
@@ -278,24 +302,26 @@ function borrarPedido(fila)
 function guardarCambios(fila, valoresAnteriores)
 {
 //Las columnas dejan de permitir alteracion y se les ponen un fondo blanco para que quede mas claro
-    fila.children[0].contentEditable = "false";
+    var producto = document.createElement("td");
+    producto.textContent =fila.children[0].value; // el textContent del td es el producto
+    fila.replaceChild(producto, fila.children[0]);
     fila.children[1].contentEditable = "false";
-    fila.children[0].style.background = "blue";
+    producto.style.background = "blue";
     fila.children[1].style.background = "blue";
     //Verifica si hubo cambios
-    if ( (fila.children[0].innerHTML != valoresAnteriores.producto) || (fila.children[1].innerHTML != valoresAnteriores.cantidad))
+    if ( (producto.innerHTML != valoresAnteriores.producto) || (fila.children[1].innerHTML != valoresAnteriores.cantidad))
     {
           //Si encuentra cambios pregunta si los quiere mantener
         if (confirm("¿Seguro que alterar el pedido?"))
         {
             //Recalcula el precio
-            fila.children[2].innerHTML = calcularValor(fila.children[0].innerHTML, fila.children[1].innerHTML);
+            fila.children[2].innerHTML = calcularValor(producto.innerHTML, parseInt (fila.children[1].innerHTML));
             //Aca se debe subir la fila al heroku
         }
         else
         {
             //Vuelve a los valores anteriores
-            fila.children[0].innerHTML= valoresAnteriores.producto;
+            producto.innerHTML= valoresAnteriores.producto;
             fila.children[1].innerHTML= valoresAnteriores.cantidad;
         }
     }
@@ -319,20 +345,22 @@ function editarPedido(fila)
         'total': fila.children[2].innerHTML
     };
 //Las columnas se vuelven editables y se les ponen un fondo blanco para que quede mas claro
-    fila.children[0].contentEditable = "true";
     fila.children[1].contentEditable = "true";
     fila.children[0].style.background = "white";
     fila.children[1].style.background = "white";
 //Se crea un boton que al apretarse confirma los cambios, este reemplaza el boton anterior
     var btnGuardar = document.createElement("button");
+    var elegirProducto = document.createElement("select");
+    cargarSelector(elegirProducto);
+
+
     btnGuardar.innerHTML = "Guardar";
     btnGuardar.type = "button";
     btnGuardar.addEventListener('click', function(){guardarCambios(fila, valoresAnteriores);});
     fila.replaceChild(btnGuardar,fila.children[3]);
+    fila.replaceChild(elegirProducto,fila.children[0] );
 
 }
-
-
 
 /////////// TABLA DE PEDIDOS //////////////
 
