@@ -309,9 +309,9 @@ function guardarCambios(fila, valoresAnteriores)
     producto.style.background = "blue";
     fila.children[1].style.background = "blue";
     //Si una cantidad no es un numero o negativa la vuelve 0
-    if (isNaN(fila.children[1].innerHTML) || (parseInt (fila.children[1].innerHTML)) <0)
+    if (isNaN(fila.children[1].innerHTML) || (parseInt (fila.children[1].innerHTML)) <1)
     {
-        fila.children[1].innerHTML = '0';
+        fila.children[1].innerHTML = '1';
     }
     //Verifica si hubo cambios
     if ( (producto.innerHTML != valoresAnteriores.producto) || (fila.children[1].innerHTML != valoresAnteriores.cantidad))
