@@ -85,9 +85,8 @@ function cargarTabla() {
         }
     })
     .then(function(herukoJson){
-       // console.log(herukoJson);
        herukoJson.pedidos.forEach(function(pedido){
-       cargarPedido(pedido.thing);
+       cargarPedido(pedido.thing, pedido._id);
        })
     })
     .catch(function(error) {console.log(error)})
@@ -95,8 +94,9 @@ function cargarTabla() {
 }
 
 //Esta funcion carga a la tabla un nuevo pedido.
-  function cargarPedido(nuevoPedido) {
+  function cargarPedido(nuevoPedido, IDnuevoPedido) {
     // Recibe la direccion de la tabla y crea una fila siempre al final
+    
     var tabla = document.getElementById("tablaPedido");
     var fila = tabla.insertRow(-1);
 
@@ -130,7 +130,7 @@ function cargarTabla() {
     var btnBorrar = document.createElement("button");
     btnBorrar.innerHTML = "Borrar";
     btnBorrar.type = "button";
-    btnBorrar.addEventListener('click', function(){borrarPedido(fila);});
+    btnBorrar.addEventListener('click', function(){borrarPedido(fila, IDnuevoPedido);});
     fila.appendChild(btnBorrar);
     // Finalmente agregamos la fila al cuerpo de la tabla
     tabla.appendChild(fila);
@@ -289,11 +289,24 @@ function borrarTabla(){
     
 }
 
-function borrarPedido(fila)
+function borrarPedido(fila, IDPedido)
 {
-    var tabla = document.getElementById("tablaPedido");
     if (confirm("¿Seguro que desea eliminar?")) 
-   { tabla.removeChild(fila);}
+    { 
+        fetch((url+ '/' +IDPedido),{
+            'method':'DELETE',
+            'mode': 'cors'
+        })
+        .then(function(respuesta){
+            if(respuesta.ok) {
+                var tabla = document.getElementById("tablaPedido");
+                tabla.removeChild(fila);
+            }
+            else {
+                alert("La fila no se pudo borrar.");
+            }
+        });
+    }
 }
 
 
