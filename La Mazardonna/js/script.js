@@ -303,11 +303,16 @@ function guardarCambios(fila, valoresAnteriores)
 {
 //Las columnas dejan de permitir alteracion y se les ponen un fondo blanco para que quede mas claro
     var producto = document.createElement("td");
-    producto.textContent =fila.children[0].value; // el textContent del td es el producto
+    producto.textContent =fila.children[0].value; // el textContent del td es el selector
     fila.replaceChild(producto, fila.children[0]);
     fila.children[1].contentEditable = "false";
     producto.style.background = "blue";
     fila.children[1].style.background = "blue";
+    //Si una cantidad no es un numero o negativa la vuelve 0
+    if (isNaN(fila.children[1].innerHTML) || (parseInt (fila.children[1].innerHTML)) <0)
+    {
+        fila.children[1].innerHTML = '0';
+    }
     //Verifica si hubo cambios
     if ( (producto.innerHTML != valoresAnteriores.producto) || (fila.children[1].innerHTML != valoresAnteriores.cantidad))
     {
