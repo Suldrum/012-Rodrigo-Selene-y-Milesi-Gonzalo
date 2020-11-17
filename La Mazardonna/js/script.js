@@ -36,7 +36,7 @@ function cargarContenedor(referenciaHTML)
 //////////////BOTON MENU NAV ////////////////////////////////////
 
 //let btnmenu = document.getElementById('btnNav');
-window.addEventListener('resize', reajustar);
+/*window.addEventListener('resize', reajustar);
 
 function reajustar(){
     if (window.innerWidth >= 706.05){
@@ -136,8 +136,7 @@ function cargarTabla() {
     tabla.appendChild(fila);
     
     // modifica el atributo "border" de la tabla y lo fija a "2";
-     tabla.setAttribute("border", "2");
-     filtrarProductos();    
+     tabla.setAttribute("border", "2");  
 }
 
 function cargarSelector(elegirProducto)
@@ -371,6 +370,8 @@ function editarPedido(fila)
 
 
 /////////// FILTROS TABLA DE PEDIDOS //////////////
+let productoFiltrado = document.getElementById("idProductoFiltro");
+productoFiltrado.addEventListener('keyup', filtrarProductos);
 
 function cumpleFiltro(columna, busqueda)
 {
@@ -382,7 +383,7 @@ function cumpleFiltro(columna, busqueda)
         
 }
 
-function filtroTabla(busqueda,columna, color)
+function filtroTabla(busqueda,columna)
 {
     //"desaparece" las filas que no sea contengan lo buscado
     var tabla = document.getElementById("tablaPedido");
@@ -391,17 +392,16 @@ function filtroTabla(busqueda,columna, color)
             var found = cumpleFiltro(cellsOfRow[columna],busqueda);
             if(found)
             {
-                tabla.rows[i].style.color = color ; //si se cambia por .style = "none" desaparece, vuelve innecesario el color
-            }
+                tabla.rows[i].style.display = "" ; 
+            }else
+                tabla.rows[i].style.display = "none" ;
         }
 }
 
 function filtrarProductos()
 {
     var columna = 0;  
-    //manda por parametro el "tipo" de producto, la columna donde estan y el estilo
-    filtroTabla("empanada",columna, 'green');
-    filtroTabla("pizza",columna, 'red');
+    filtroTabla(productoFiltrado.value, columna); 
 }
 
 
