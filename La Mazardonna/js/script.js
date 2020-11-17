@@ -55,9 +55,15 @@ function  MostrarNav(){
 }
 */
 //btnmenu.addEventListener("click", MostrarNav);
-document.addEventListener("load", cargarTabla());
+
 
 ////////////// FIN BOTON MENU NAV ////////////////////////////////////
+
+/////////// TABLA DE PEDIDOS //////////////
+
+//LAS SIGUIENTES LINEAS DE CODIGO REFIEREN DIRECTA O INDIRECTAMENTE A LA TABLA DE PEDIDOS DE pedido_online.html
+
+document.addEventListener("load", cargarTabla());
 
 ////////////////// BOTONES TABLA DINAMICA /////////////////////////
 
@@ -124,7 +130,7 @@ function cargarTabla() {
     var btnEditar = document.createElement("button");
     btnEditar.innerHTML = "Editar";
     btnEditar.type = "button";
-    btnEditar.addEventListener('click', function(){editarPedido(fila);});
+    btnEditar.addEventListener('click', function(){editarPedido(fila, IDnuevoPedido);});
     fila.appendChild(btnEditar);
      //Crea el boton de borrar, le asigna las propiedades
     var btnBorrar = document.createElement("button");
@@ -138,8 +144,10 @@ function cargarTabla() {
      tabla.setAttribute("border", "2");  
 }
 
+//Esta funcion carga un selector con los productos existentes
 function cargarSelector(elegirProducto)
-{   
+{
+    //A futuro se espera poder cargar el selector desde la base de datos  
     var producto = document.createElement("option");
     producto.value = "Pizza Muzarella";
     producto.innerHTML = "Pizza Muzarella";
@@ -164,7 +172,10 @@ function cargarSelector(elegirProducto)
 ////////////////// FIN FUNCIONES DE CARGA /////////////////////////
 
 ////////////////// FUNCIONES DE CALCULO /////////////////////////
+
+//Esta funcion calcula el precio total del pedido
 function calcularValor (producto, cantidad){
+ //A futuro se espera poder calcular el precio recibiendo el precio desde la base de datos
     var precio = 0;
     switch(producto){
         case "Pizza Muzarella":
@@ -187,6 +198,7 @@ function calcularValor (producto, cantidad){
 
 ////////////////// FUNCIONES DE AGREGAR /////////////////////////
 
+//Esta funcion agrega al servidor un nuevo pedido
 function agregarAlHeruku (pedido){
     let pedidoNuevo = {
         'thing': {
@@ -207,7 +219,6 @@ function agregarAlHeruku (pedido){
     })
         .then(function (respuesta) {
             if (respuesta.ok) {
-                // console.log(respuesta);
                 return respuesta.json();
             }
             else {
@@ -215,14 +226,13 @@ function agregarAlHeruku (pedido){
             }
         })
         .then(function (herukoJson) {
-          //  let contenedor = document.querySelector("#result");
-          //  contenedor.innerHTML = JSON.stringify(herukoJson);
             cargarPedido(pedido, herukoJson._id);
         })
 }
 
+//Esta funcion genera un producto random
 function generarProducto(){
-//Get random via heroku?
+    //A futuro se espera poder elegir un producto de manera random desde la base de datos
 
     var aux =  Math.floor((Math.random()*4) );
     var producto = '';
@@ -238,6 +248,7 @@ function generarProducto(){
     }
 }
 
+//Esta funcion genera un cantidad random segun el producto que llega por parametro
 function generarCantidad(producto){
     var compareWith = "pizza";
     var cantidad=0;
@@ -248,6 +259,7 @@ function generarCantidad(producto){
     }
 }
 
+//Esta funcion genera un pedido random 3 veces
 function agregarPedidoRandom(){
     for (var i = 0; i < 3 ; i++){
         var productoRandom = generarProducto();
@@ -261,10 +273,12 @@ function agregarPedidoRandom(){
     }               
 }                
 
+//Esta funcion genera un pedido leido desde la pagina
 function agregarNuevoPedido(){
     var compareWith = "Nada";
     var inputProducto = document.querySelector('#IDproducto').value;
     var inputCantidad = parseInt(document.querySelector('#IDcantidad').value);
+    //Se asegura que se haya elegido un producto del selector y que se haya pedido al menos un producto
     if (!(compareWith.indexOf(inputProducto) == 0) && (inputCantidad > 0)){
         var total = calcularValor(inputProducto,inputCantidad);
         var items = 
@@ -276,16 +290,10 @@ function agregarNuevoPedido(){
 }
 ////////////////// FIN FUNCIONES DE AGREGAR /////////////////////////
 
+////////////////// FUNCIONES DE BORRADO /////////////////////////
 
+//Esta funcion elimina todos los datos del servidor y de la tabla en el html
 function borrarTabla(){
- /*   var tabla = document.getElementById("tablaPedido");
-    var cantFilas = tabla.rows.length - 1;
-    while (cantFilas > 0)
-    {
-        tabla.deleteRow(cantFilas);
-        cantFilas= cantFilas - 1;
-    }
-*/
 var tabla = document.getElementById("tablaPedido");
   fetch(url)
         .then(function(respuesta){
@@ -305,9 +313,7 @@ var tabla = document.getElementById("tablaPedido");
                 })
                 .then(function(respuesta){
                     if(respuesta.ok) {
-                        
-                  //  console.log(pedido.thing.producto);  //el pedido en el heroku no coincide con el de la tabla ¿why?
-                //    console.log(tabla.rows[1].innerHTML);
+                     //Borra el ultimo elemento de la tabla, capaz y deberia borrar el que esta leyendo pero como carga segun le llega habria que hacer un metodo que busque en que posicion esta y todavia no hay producto unico
                         tabla.deleteRow(-1);
                     }
                     else {
@@ -320,6 +326,7 @@ var tabla = document.getElementById("tablaPedido");
 
 }
 
+//Esta funcion elimina un pedido del servidor y de la tabla en el html
 function borrarPedido(fila, IDPedido)
 {
     if (confirm("¿Seguro que desea eliminar este pedido?")) 
@@ -340,9 +347,49 @@ function borrarPedido(fila, IDPedido)
     }
 }
 
+////////////////// FIN FUNCIONES DE BORRADO /////////////////////////
 
+////////////////// FUNCIONES DE EDICION /////////////////////////
 
-function guardarCambios(fila, valoresAnteriores)
+//Esta funcion edita un pedido del servidor, de no poder hacerlo restaura los valores viejos en la tabla
+function editarHeroku(fila, IDPedido, valoresAnteriores)
+{
+    //Crea el pedido los valores de la fila alterada
+    let pedidoEditado = {
+        'thing': {
+            'producto': fila.children[0].innerHTML,
+            'cantidad':  (parseInt (fila.children[1].innerHTML)),
+            'precio':  (parseInt (fila.children[2].innerHTML))
+        }
+    }
+    
+    //Encuentra el pedido por su ID y lo pisa con los datos nuevos
+    fetch((url+ '/' +IDPedido),{
+        'method':'PUT',
+        'mode': 'cors',
+        'headers': {
+            'content-type': 'application/JSON'
+        },
+        'body': JSON.stringify(pedidoEditado)
+    })
+    .then(function(respuesta){
+        if(!respuesta.ok) {
+        //Si falla el PUT restaura los valores viejos en la tabla
+            fila.children[0].innerHTML = valoresAnteriores.producto;
+            fila.children[1].innerHTML = valoresAnteriores.cantidad;
+            fila.children[2].innerHTML =  valoresAnteriores.precio;
+            alert("No se pudo modificar el pedido");
+        }
+        else {
+            //Si funciona el PUT da el aviso y devuelve el json
+            alert("Datos modificados");
+            return respuesta.json(); //esto es extremamente necesario???
+        }
+    })
+}
+
+//Esta funcion deja de permitir la edicion de la tabla y que cambios ocurren
+function guardarCambios(fila, valoresAnteriores, IDPedido)
 {
 //Las columnas dejan de permitir alteracion y se les ponen un fondo azul porque quiero ver que cambio
     var producto = document.createElement("td");
@@ -364,7 +411,8 @@ function guardarCambios(fila, valoresAnteriores)
         {
             //Recalcula el precio
             fila.children[2].innerHTML = calcularValor(producto.innerHTML, parseInt (fila.children[1].innerHTML));
-            //Aca se debe subir la fila al heroku
+            //Aca se modifica el Heroku, de no poder regresa a los valore viejos
+            editarHeroku(fila, IDPedido, valoresAnteriores);
         }
         else
         {
@@ -377,13 +425,13 @@ function guardarCambios(fila, valoresAnteriores)
     var btnEditar = document.createElement("button");
     btnEditar.innerHTML = "Editar";
     btnEditar.type = "button";
-    btnEditar.addEventListener('click', function(){editarPedido(fila);});
+    btnEditar.addEventListener('click', function(){editarPedido(fila, IDPedido);});
     fila.replaceChild(btnEditar,fila.children[3]);
 
 }
 
-
-function editarPedido(fila)
+//Esta funcion permite la edicion de la tabla
+function editarPedido(fila, IDPedido)
 {
 //Se guardan los valores viejos
     let valoresAnteriores =
@@ -392,26 +440,29 @@ function editarPedido(fila)
         'cantidad': fila.children[1].innerHTML,
         'total': fila.children[2].innerHTML
     };
+
 //Las columnas se vuelven editables y se les ponen un fondo blanco para que quede mas claro
     fila.children[1].contentEditable = "true";
     fila.children[0].style.background = "white";
     fila.children[1].style.background = "white";
-//Se crea un boton que al apretarse confirma los cambios, este reemplaza el boton anterior
-    var btnGuardar = document.createElement("button");
+
+//Se crea un selector y este reemplaza al tr de producto
     var elegirProducto = document.createElement("select");
     cargarSelector(elegirProducto);
+    fila.replaceChild(elegirProducto,fila.children[0] );
+//Por defecto ya viene elegido el producto anterior
     elegirProducto.value = valoresAnteriores.producto;
 
+//Se crea un boton que al apretarse confirma los cambios, este reemplaza el boton anterior
+    var btnGuardar = document.createElement("button");
     btnGuardar.innerHTML = "Guardar";
     btnGuardar.type = "button";
-    btnGuardar.addEventListener('click', function(){guardarCambios(fila, valoresAnteriores);});
+    btnGuardar.addEventListener('click', function(){guardarCambios(fila, valoresAnteriores, IDPedido);});
     fila.replaceChild(btnGuardar,fila.children[3]);
-    fila.replaceChild(elegirProducto,fila.children[0] );
 
 }
 
-/////////// TABLA DE PEDIDOS //////////////
-
+////////////////// FIN FUNCIONES DE EDICION /////////////////////////
 
 /////////// FILTROS TABLA DE PEDIDOS //////////////
 let productoFiltrado = document.getElementById("idProductoFiltro");
