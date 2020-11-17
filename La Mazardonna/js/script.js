@@ -301,7 +301,7 @@ function borrarPedido(fila)
 
 function guardarCambios(fila, valoresAnteriores)
 {
-//Las columnas dejan de permitir alteracion y se les ponen un fondo blanco para que quede mas claro
+//Las columnas dejan de permitir alteracion y se les ponen un fondo azul porque quiero ver que cambio
     var producto = document.createElement("td");
     producto.textContent =fila.children[0].value; // el textContent del td es el selector
     fila.replaceChild(producto, fila.children[0]);
@@ -357,7 +357,7 @@ function editarPedido(fila)
     var btnGuardar = document.createElement("button");
     var elegirProducto = document.createElement("select");
     cargarSelector(elegirProducto);
-
+    elegirProducto.value = valoresAnteriores.producto;
 
     btnGuardar.innerHTML = "Guardar";
     btnGuardar.type = "button";
