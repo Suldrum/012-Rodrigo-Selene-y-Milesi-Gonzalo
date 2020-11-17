@@ -465,6 +465,7 @@ function editarPedido(fila, IDPedido)
 ////////////////// FIN FUNCIONES DE EDICION /////////////////////////
 
 /////////// FILTROS TABLA DE PEDIDOS //////////////
+
 let productoFiltrado = document.getElementById("idProductoFiltro");
 productoFiltrado.addEventListener('keyup', filtrarProductos);
 
