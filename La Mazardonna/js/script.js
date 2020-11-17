@@ -134,7 +134,6 @@ function cargarTabla() {
     fila.appendChild(btnBorrar);
     // Finalmente agregamos la fila al cuerpo de la tabla
     tabla.appendChild(fila);
-    
     // modifica el atributo "border" de la tabla y lo fija a "2";
      tabla.setAttribute("border", "2");  
 }
@@ -216,9 +215,9 @@ function agregarAlHeruku (pedido){
             }
         })
         .then(function (herukoJson) {
-            let contenedor = document.querySelector("#result");
-            contenedor.innerHTML = JSON.stringify(herukoJson);
-            cargarPedido(pedido);
+          //  let contenedor = document.querySelector("#result");
+          //  contenedor.innerHTML = JSON.stringify(herukoJson);
+            cargarPedido(pedido, herukoJson._id);
         })
 }
 
@@ -279,19 +278,51 @@ function agregarNuevoPedido(){
 
 
 function borrarTabla(){
-    var tabla = document.getElementById("tablaPedido");
+ /*   var tabla = document.getElementById("tablaPedido");
     var cantFilas = tabla.rows.length - 1;
     while (cantFilas > 0)
     {
         tabla.deleteRow(cantFilas);
         cantFilas= cantFilas - 1;
     }
-    
+*/
+var tabla = document.getElementById("tablaPedido");
+  fetch(url)
+        .then(function(respuesta){
+            if(respuesta.ok) {
+                return respuesta.json();
+            }
+            else {
+                alert("No se puede acceder al servidor.");
+            }
+        })
+        
+        .then(function(herukoJson){
+            herukoJson.pedidos.forEach(function(pedido){
+                fetch((url+ '/' +pedido._id),{
+                    'method':'DELETE',
+                    'mode': 'cors'
+                })
+                .then(function(respuesta){
+                    if(respuesta.ok) {
+                        
+                  //  console.log(pedido.thing.producto);  //el pedido en el heroku no coincide con el de la tabla ¿why?
+                //    console.log(tabla.rows[1].innerHTML);
+                        tabla.deleteRow(-1);
+                    }
+                    else {
+                        alert("No se pudieron borrar los datos.");
+                    }
+                }
+            );
+        });
+    });
+
 }
 
 function borrarPedido(fila, IDPedido)
 {
-    if (confirm("¿Seguro que desea eliminar?")) 
+    if (confirm("¿Seguro que desea eliminar este pedido?")) 
     { 
         fetch((url+ '/' +IDPedido),{
             'method':'DELETE',
@@ -303,7 +334,7 @@ function borrarPedido(fila, IDPedido)
                 tabla.removeChild(fila);
             }
             else {
-                alert("La fila no se pudo borrar.");
+                alert("No se pudo eliminar el pedido");
             }
         });
     }
