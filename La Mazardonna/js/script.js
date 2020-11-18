@@ -114,10 +114,10 @@ function actualizarTabla(){
     cargarTabla();
     setTimeout(function() {
         filtrarProductos();
-        setTimeout(function() {
-            actualizarTabla();
-        }, 15000);   
-    }, 5000);
+    }, 1000);
+    setTimeout(function() {
+        actualizarTabla();
+    }, 15000);   
      
 
 //location.reload();
