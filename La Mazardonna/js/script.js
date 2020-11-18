@@ -148,15 +148,27 @@ function actualizarTabla(){
     {
         tabla.deleteRow(-1);
     }
-    cargarTabla();
-    setTimeout(function() {
-        filtrarProductos();
+    fetch(url)
+    .then(function(respuesta){
+        if(respuesta.ok) {
+             return respuesta.json();
+        }
+        else {
+            alert("Error al acceder al Heroku");
+        }
+    })
+    .then(function(herukoJson){
+        herukoJson.pedidos.forEach(function(pedido){ 
+            cargarPedido(pedido.thing, pedido._id);
+        })
+    })
+    .then(function(){ 
+        filtrarProductos();})
+    .then(function(){ 
         setTimeout(function() {
-            actualizarTabla();
+                actualizarTabla();
         }, 15000);
-    }, 1000);
-       
-     
+    })
 
 //location.reload();
 
