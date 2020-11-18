@@ -112,15 +112,12 @@ function actualizarTabla(){
         tabla.deleteRow(-1);
     }
     cargarTabla();
-    filtrarProductos();
     setTimeout(function() {
         filtrarProductos();
-    }, 5000);   
-    setTimeout(function() {
-        actualizarTabla();
-    }, 15000);   
-
-
+        setTimeout(function() {
+            actualizarTabla();
+        }, 15000);   
+    }, 5000);
      
 
 //location.reload();
