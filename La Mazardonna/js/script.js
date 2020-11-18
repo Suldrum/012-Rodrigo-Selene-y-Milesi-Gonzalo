@@ -123,6 +123,8 @@ productoFiltrado.addEventListener('keyup', filtrarProductos);
 document.addEventListener("load", actualizarTabla());
 
 //Esta funcion trae la informacion en el Heroku y la manda a la tabla
+
+/*
 async function cargarTabla() {
 try
 {
@@ -138,16 +140,9 @@ try
 }
     catch(error) {console.log(error)}    
 }
-
-
-
+*/
 
 function actualizarTabla(){ 
-  var tabla = document.getElementById("tablaPedido");
-    while ((tabla.rows.length - 1) > 0)
-    {
-        tabla.deleteRow(-1);
-    }
     fetch(url)
     .then(function(respuesta){
         if(respuesta.ok) {
@@ -158,6 +153,11 @@ function actualizarTabla(){
         }
     })
     .then(function(herukoJson){
+        var tabla = document.getElementById("tablaPedido");
+        while ((tabla.rows.length - 1) > 0)
+        {
+            tabla.deleteRow(-1);
+        }
         herukoJson.pedidos.forEach(function(pedido){ 
             cargarPedido(pedido.thing, pedido._id);
         })
