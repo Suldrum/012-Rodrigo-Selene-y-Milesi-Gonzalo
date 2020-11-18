@@ -78,7 +78,7 @@ btnBorrarTabla.addEventListener('click', borrarTabla);
 ////////////////// FIN BOTONES TABLA DINAMICA /////////////////////////
 
 ////////////////// FUNCIONES DE CARGA /////////////////////////
-
+const delay = 20000;
 //Esta funcion trae la informacion en el Heroku y la manda a la tabla
 async function cargarTabla() {
 try
@@ -91,19 +91,23 @@ try
     herukoJson.pedidos.forEach(function(pedido){
        cargarPedido(pedido.thing, pedido._id);
        })
-   // setInterval(function(){ borrarTabla();}, 30000); 
-    setInterval(function(){
-        var tabla = document.getElementById("tablaPedido");
-        var cantFilas = tabla.rows.length - 1;
-        while (cantFilas > 0)
-        {
-            tabla.deleteRow(cantFilas);
-            cantFilas= cantFilas - 1;
-        }
-        cargarTabla();
-    }, 30000); 
+
+    setTimeout(function() {actualizarTabla();}, 15000); 
+
 }
     catch(error) {console.log(error)}    
+}
+
+function actualizarTabla(){ 
+    var tabla = document.getElementById("tablaPedido");
+    var cantFilas = tabla.rows.length - 1;
+    while (cantFilas > 0)
+    {
+        tabla.deleteRow(cantFilas);
+        cantFilas= cantFilas - 1;
+    }
+    cargarTabla();
+    
 }
 
 //Esta funcion carga a la tabla un nuevo pedido.
