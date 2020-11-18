@@ -169,6 +169,9 @@ function actualizarTabla(){
                 actualizarTabla();
         }, 15000);
     })
+    .catch(function(error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+      });    
 
 //location.reload();
 
