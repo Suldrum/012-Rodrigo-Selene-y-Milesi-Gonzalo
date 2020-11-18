@@ -161,6 +161,7 @@ function actualizarTabla(){
         herukoJson.pedidos.forEach(function(pedido){ 
             cargarPedido(pedido.thing, pedido._id);
         })
+        console.log("la tabla se ha actualizado");
     })
     .then(function(){ 
         filtrarProductos();})
@@ -170,7 +171,7 @@ function actualizarTabla(){
         }, 15000);
     })
     .catch(function(error) {
-        console.log('Hubo un problema con la petición Fetch:' + error.message);
+        console.log("Hubo un problema con la petición Fetch:" + error.message);
       });    
 
 //location.reload();
