@@ -57,13 +57,14 @@ function  MostrarNav(){
 //btnmenu.addEventListener("click", MostrarNav);
 
 
+
 ////////////// FIN BOTON MENU NAV ////////////////////////////////////
 
 /////////// TABLA DE PEDIDOS //////////////
 
 //LAS SIGUIENTES LINEAS DE CODIGO REFIEREN DIRECTA O INDIRECTAMENTE A LA TABLA DE PEDIDOS DE pedido_online.html
 
-document.addEventListener("load", cargarTabla());
+
 
 ////////////////// BOTONES TABLA DINAMICA /////////////////////////
 
@@ -78,7 +79,12 @@ btnBorrarTabla.addEventListener('click', borrarTabla);
 ////////////////// FIN BOTONES TABLA DINAMICA /////////////////////////
 
 ////////////////// FUNCIONES DE CARGA /////////////////////////
-const delay = 20000;
+
+let productoFiltrado = document.getElementById("idProductoFiltro");
+productoFiltrado.addEventListener('keyup', filtrarProductos);
+//document.addEventListener("load", cargarTabla());
+document.addEventListener("load", actualizarTabla());
+
 //Esta funcion trae la informacion en el Heroku y la manda a la tabla
 async function cargarTabla() {
 try
@@ -92,23 +98,36 @@ try
        cargarPedido(pedido.thing, pedido._id);
        })
 
-    setTimeout(function() {actualizarTabla();}, 15000); 
-
 }
     catch(error) {console.log(error)}    
 }
 
+
+
+
 function actualizarTabla(){ 
-    var tabla = document.getElementById("tablaPedido");
-    var cantFilas = tabla.rows.length - 1;
-    while (cantFilas > 0)
+  var tabla = document.getElementById("tablaPedido");
+    while ((tabla.rows.length - 1) > 0)
     {
-        tabla.deleteRow(cantFilas);
-        cantFilas= cantFilas - 1;
+        tabla.deleteRow(-1);
     }
     cargarTabla();
-    
+    filtrarProductos();
+    setTimeout(function() {
+        filtrarProductos();
+    }, 5000);   
+    setTimeout(function() {
+        actualizarTabla();
+    }, 15000);   
+
+
+     
+
+//location.reload();
+
 }
+
+
 
 //Esta funcion carga a la tabla un nuevo pedido.
   function cargarPedido(nuevoPedido, IDnuevoPedido) {
@@ -479,8 +498,7 @@ function editarPedido(fila, IDPedido)
 
 /////////// FILTROS TABLA DE PEDIDOS //////////////
 
-let productoFiltrado = document.getElementById("idProductoFiltro");
-productoFiltrado.addEventListener('keyup', filtrarProductos);
+
 
 function cumpleFiltro(columna, busqueda)
 {
