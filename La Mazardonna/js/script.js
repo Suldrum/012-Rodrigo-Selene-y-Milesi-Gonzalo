@@ -80,23 +80,19 @@ btnBorrarTabla.addEventListener('click', borrarTabla);
 ////////////////// FUNCIONES DE CARGA /////////////////////////
 
 //Esta funcion trae la informacion en el Heroku y la manda a la tabla
-function cargarTabla() {
-    fetch(url)
-    .then(function(respuesta){
-        if(respuesta.ok) {
-            return respuesta.json();
-        }
-        else {
-            alert("Error al acceder al Heroku");
-        }
-    })
-    .then(function(herukoJson){
-       herukoJson.pedidos.forEach(function(pedido){
+async function cargarTabla() {
+try
+{
+    let respuesta = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        });
+    let herukoJson = await respuesta.json();
+    herukoJson.pedidos.forEach(function(pedido){
        cargarPedido(pedido.thing, pedido._id);
        })
-    })
-    .catch(function(error) {console.log(error)})
-    
+}
+    catch(error) {console.log(error)}    
 }
 
 //Esta funcion carga a la tabla un nuevo pedido.
@@ -462,6 +458,8 @@ function editarPedido(fila, IDPedido)
 
 }
 
+//
+
 ////////////////// FIN FUNCIONES DE EDICION /////////////////////////
 
 /////////// FILTROS TABLA DE PEDIDOS //////////////
@@ -550,6 +548,7 @@ function validar(){
         else{
             alert("El formulario fue enviado correctamente");
             IDpedido.reset();
+            //borrarTabla();
         }
         crearCaptcha();
     }
