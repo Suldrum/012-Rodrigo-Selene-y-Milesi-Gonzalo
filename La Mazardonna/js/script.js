@@ -33,6 +33,43 @@ function cargarContenedor(referenciaHTML)
 }
 
 */
+
+/*
+$(document).ready(function()
+    {
+        $("a").on("click", function(event)
+        {
+        try{   //Cancela el evento del href, por defecto al pinchar en un link
+            // te envia a este, con esto evitamos que ejecute el link
+            event.preventDefault();            
+           //Cargamos el contenido del enlace
+            $('#contenedor').load(this.href);
+        }
+            catch(error) {console.log("fail");}
+        });
+    });
+*/
+/*
+$(document).ready(function()
+    {
+        $("a").on("click", function(event)
+        {
+            event.preventDefault();
+            document.querySelector("#contenedor").innerHTML ="";    
+            fetch(this.href, {
+            //    method: 'GET',
+                mode: 'cors',
+            })
+            .then(function(response){
+                response.text()
+                .then(t => document.querySelector("#contenedor").innerHTML = t);
+            
+            });
+                   
+           
+        });
+    });
+*/
 //////////////BOTON MENU NAV ////////////////////////////////////
 
 //let btnmenu = document.getElementById('btnNav');
