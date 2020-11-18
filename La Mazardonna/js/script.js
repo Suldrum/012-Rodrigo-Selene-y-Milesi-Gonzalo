@@ -91,6 +91,17 @@ try
     herukoJson.pedidos.forEach(function(pedido){
        cargarPedido(pedido.thing, pedido._id);
        })
+   // setInterval(function(){ borrarTabla();}, 30000); 
+    setInterval(function(){
+        var tabla = document.getElementById("tablaPedido");
+        var cantFilas = tabla.rows.length - 1;
+        while (cantFilas > 0)
+        {
+            tabla.deleteRow(cantFilas);
+            cantFilas= cantFilas - 1;
+        }
+        cargarTabla();
+    }, 30000); 
 }
     catch(error) {console.log(error)}    
 }
