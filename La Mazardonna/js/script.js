@@ -1,13 +1,89 @@
 //Repositorio del trabajo
-//const gitURL = "https://github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo";
+const gitURL = "https://github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo";
 //Pagina de alojamiento del json
 const url = "https://web-unicen.herokuapp.com/api/groups/012-Rodrigo-Selene-y-Milesi-Gonzalo/pedidos"; 
 
 "use strict";
 
-/////////// PEDIDOS ONLINE //////////////
+//////////////////////////////////// CARGA DE CONTENEDOR ////////////////////////////////////
 
-////////////////// TABLA DINAMICA /////////////////////////
+// Carga el contenido de una pagina que le llega por referencia en el contenedor
+function cargarPagina(pagina)
+{   
+    fetch(pagina, {
+        method: 'GET',
+        mode: 'cors',
+    })
+    .then(function(response){
+        return response.text();    
+    })
+    .then(t => {
+        document.querySelector("#contenedor").innerHTML ="";
+        document.querySelector("#contenedor").innerHTML = t;
+        // Si la pagina es pedido online inicio el script para realizar el pedido
+        history.pushState(null, "", pagina);
+        if (pagina === "pedido_online.html")
+        {
+            iniciarPedido();
+        }
+    })
+
+}
+let enlaces;
+$("a").on("click", function(event)
+{   
+    event.preventDefault();
+    // Tomo la referencia y creo un arreglo de string donde guardo cada seccion separada por "/"
+    let urlInvocado = this.href.split("/");
+    // La ultima posicion es la ruta relativa de la pagina
+    let pagina = urlInvocado[urlInvocado.length-1];
+    cargarPagina(pagina);
+});
+
+// La pagina que se carga al inicio por defecto es home.html
+window.onload = function(){
+    cargarPagina("home.html");
+    
+}
+
+//////////////////////////////////// FIN CARGA DE CONTENEDOR ////////////////////////////////////
+
+////////////////////////////////// BOTON MENU NAV ////////////////////////////////////
+
+window.addEventListener('resize', reajustar);
+
+function reajustar(){
+    if (window.innerWidth >= 706.05){
+        document.getElementById("listaNav").style.display = "flex";
+    }else{
+        document.getElementById("listaNav").style.display = "none";
+    }
+}
+let btnmenu = document.getElementById('btnNav');
+btnmenu.addEventListener("click", MostrarNav);
+
+function  MostrarNav(){
+    let listaMenu = document.getElementById("listaNav");
+    if (listaMenu.style.display == "none"){
+        listaMenu.style.display = "grid";
+    }else
+        listaMenu.style.display = "none";
+}
+
+///////////////////////////////// FIN BOTON MENU NAV ///////////////////////////////
+
+//////////////////////////////////// PEDIDOS ONLINE ////////////////////////////////////
+
+let productoFiltrado;
+let valorCaptcha;
+
+////////////////// FUNCIONES DE CARGA /////////////////////////
+
+//Esta funcion crea los botones y eventos que se ejecutan en la pagina pedido_online.html
+function iniciarPedido(){
+    console.log("Iniciando Pedido");
+
+productoFiltrado = document.getElementById("idProductoFiltro");
 
 ////////////////// BOTONES TABLA DINAMICA /////////////////////////
 
@@ -21,11 +97,17 @@ btnBorrarTabla.addEventListener('click', borrarTabla);
 
 ////////////////// FIN BOTONES TABLA DINAMICA /////////////////////////
 
-////////////////// FUNCIONES DE CARGA /////////////////////////
-
-let productoFiltrado = document.getElementById("idProductoFiltro");
 productoFiltrado.addEventListener('keyup', filtrarProductos);
 document.addEventListener("ready", actualizarTabla());
+
+document.addEventListener("load", crearCaptcha());
+
+// Limpia el formulario cada vez que se cargue la pagina
+document.addEventListener("load", IDpedido.reset()); 
+let btnenviar = document.getElementById('botonenviar');
+btnenviar.addEventListener('click', validar);
+
+}
 
 //Esta funcion trae la informacion en el Heroku y la manda a la tabla
 function actualizarTabla(){ 
@@ -39,7 +121,7 @@ function actualizarTabla(){
         }
     })
     .then(function(herukoJson){
-        var tabla = document.getElementById("tablaPedido");
+        let tabla = document.getElementById("tablaPedido");
         while ((tabla.rows.length - 1) > 0)
         {
             tabla.deleteRow(-1);
@@ -50,7 +132,8 @@ function actualizarTabla(){
       //  console.log("la tabla se ha actualizado");
     })
     .then(function(){ 
-        filtrarProductos();})
+        filtrarProductos();
+    })
     .then(function(){ 
         setTimeout(function() {
                 actualizarTabla();
@@ -65,30 +148,30 @@ function actualizarTabla(){
   function cargarPedido(nuevoPedido, IDnuevoPedido) {
     // Recibe la direccion de la tabla y crea una fila siempre al final
     
-    var tabla = document.getElementById("tablaPedido");
-    var fila = tabla.insertRow(-1);
+    let tabla = document.getElementById("tablaPedido");
+    let fila = tabla.insertRow(-1);
 
     /// El td del producto
-    var producto = document.createElement("td");
+    let producto = document.createElement("td");
     producto.textContent =nuevoPedido.producto; // el textContent del td es el producto
     fila.appendChild(producto);
     // El td del cantidad
-    var cantidad = document.createElement("td");
+    let cantidad = document.createElement("td");
     cantidad.textContent =nuevoPedido.cantidad ; // el textContent del td es el cantidad
     fila.appendChild(cantidad);
     // El td del precio
-    var precio = document.createElement("td");
+    let precio = document.createElement("td");
     precio.textContent =nuevoPedido.precio; // el textContent del td es el precio
     fila.appendChild(precio);
   
    //Crea el boton de editar, le asigna las propiedades
-    var btnEditar = document.createElement("button");
+    let btnEditar = document.createElement("button");
     btnEditar.innerHTML = "Editar";
     btnEditar.type = "button";
     btnEditar.addEventListener('click', function(){editarPedido(fila, IDnuevoPedido);});
     fila.appendChild(btnEditar);
      //Crea el boton de borrar, le asigna las propiedades
-    var btnBorrar = document.createElement("button");
+    let btnBorrar = document.createElement("button");
     btnBorrar.innerHTML = "Borrar";
     btnBorrar.type = "button";
     btnBorrar.addEventListener('click', function(){borrarPedido(fila, IDnuevoPedido);});
@@ -103,22 +186,22 @@ function actualizarTabla(){
 function cargarSelector(elegirProducto)
 {
     //A futuro se espera poder cargar el selector desde la base de datos  
-    var producto = document.createElement("option");
+    let producto = document.createElement("option");
     producto.value = "Pizza Muzarella";
     producto.innerHTML = "Pizza Muzarella";
     elegirProducto.appendChild(producto);
 
-    var producto2 = document.createElement("option");
+    let producto2 = document.createElement("option");
     producto2.value = "Pizza Napolitana";
     producto2.innerHTML = "Pizza Napolitana";
     elegirProducto.appendChild(producto2);
 
-    var producto3 = document.createElement("option");
+    let producto3 = document.createElement("option");
     producto3.value = "Empanada Carne";
     producto3.innerHTML = "Empanada Carne";
     elegirProducto.appendChild(producto3);
 
-    var producto4 = document.createElement("option");
+    let producto4 = document.createElement("option");
     producto4.value = "Empanada JyQ";
     producto4.innerHTML = "Empanada JyQ";
     elegirProducto.appendChild(producto4);
@@ -131,7 +214,7 @@ function cargarSelector(elegirProducto)
 //Esta funcion calcula el precio total del pedido
 function calcularValor (producto, cantidad){
  //A futuro se espera poder calcular el precio recibiendo el precio desde la base de datos
-    var precio = 0;
+    let precio = 0;
     switch(producto){
         case "Pizza Muzarella":
             precio = 100;
@@ -146,7 +229,7 @@ function calcularValor (producto, cantidad){
             precio = 40;
             break;   
     }
-    var total = precio * cantidad ;
+    let total = precio * cantidad ;
     return total; 
 }
 ////////////////// FIN FUNCIONES DE CALCULO /////////////////////////
@@ -189,23 +272,22 @@ function agregarAlHeruku (pedido){
 function generarProducto(){
     //A futuro se espera poder elegir un producto de manera random desde la base de datos
 
-    var aux =  Math.floor((Math.random()*4) );
-    var producto = '';
+    let aux =  Math.floor((Math.random()*4) );
     switch(aux){
         case 0:
-            return producto = "Pizza Muzarella";
+            return "Pizza Muzarella";
         case 1:
-            return producto = "Pizza Napolitana";    
+            return "Pizza Napolitana";    
         case 2:
-            return producto = "Empanada Carne";
+            return "Empanada Carne";
         case 3:
-            return producto = "Empanada JyQ";  
+            return "Empanada JyQ";  
     }
 }
 
 //Esta funcion genera un cantidad random segun el producto que llega por parametro
 function generarCantidad(producto){
-    var compareWith = "pizza";
+    let compareWith = "pizza";
     if (compareWith.localeCompare(producto) < 1)
         return ( Math.floor((Math.random()*3+1)) )
     else
@@ -215,11 +297,11 @@ function generarCantidad(producto){
 
 //Esta funcion genera un pedido random 3 veces
 function agregarPedidoRandom(){
-    for (var i = 0; i < 3 ; i++){
-        var productoRandom = generarProducto();
-        var cantidadRandom = generarCantidad(productoRandom);
-        var precio = calcularValor(productoRandom,cantidadRandom);
-        var items = 
+    for (let i = 0; i < 3 ; i++){
+        let productoRandom = generarProducto();
+        let cantidadRandom = generarCantidad(productoRandom);
+        let precio = calcularValor(productoRandom,cantidadRandom);
+        let items = 
                 {   "producto": productoRandom, 
                     "cantidad": cantidadRandom, 
                     "precio":  precio}; 
@@ -229,13 +311,13 @@ function agregarPedidoRandom(){
 
 //Esta funcion genera un pedido leido desde la pagina
 function agregarNuevoPedido(){
-    var compareWith = "Nada";
-    var inputProducto = document.querySelector('#IDproducto').value;
-    var inputCantidad = parseInt(document.querySelector('#IDcantidad').value);
+    let compareWith = "Nada";
+    let inputProducto = document.querySelector('#IDproducto').value;
+    let inputCantidad = parseInt(document.querySelector('#IDcantidad').value);
     //Se asegura que se haya elegido un producto del selector y que se haya pedido al menos un producto
     if (!(compareWith.indexOf(inputProducto) == 0) && (inputCantidad > 0)){
-        var total = calcularValor(inputProducto,inputCantidad);
-        var items = 
+        let total = calcularValor(inputProducto,inputCantidad);
+        let items = 
             {   "producto": inputProducto, 
                 "cantidad": inputCantidad, 
                 "precio":  total}; 
@@ -248,7 +330,7 @@ function agregarNuevoPedido(){
 
 //Esta funcion elimina todos los datos del servidor y de la tabla en el html
 function borrarTabla(){
-var tabla = document.getElementById("tablaPedido");
+let tabla = document.getElementById("tablaPedido");
   fetch(url)
         .then(function(respuesta){
             if(respuesta.ok) {
@@ -290,7 +372,7 @@ function borrarPedido(fila, IDPedido)
         })
         .then(function(respuesta){
             if(respuesta.ok) {
-                var tabla = document.getElementById("tablaPedido");
+                let tabla = document.getElementById("tablaPedido");
                 tabla.removeChild(fila);
             }
             else {
@@ -345,7 +427,7 @@ function editarHeroku(fila, IDPedido, valoresAnteriores)
 function guardarCambios(fila, valoresAnteriores, IDPedido)
 {
 //Las columnas dejan de permitir alteracion
-    var producto = document.createElement("td");
+    let producto = document.createElement("td");
     producto.textContent =fila.children[0].value; // el textContent del td es el selector
     fila.replaceChild(producto, fila.children[0]);
     fila.children[1].contentEditable = "false";
@@ -375,7 +457,7 @@ function guardarCambios(fila, valoresAnteriores, IDPedido)
         }
     }
 //Vuelve a poner el mismo boton que estaba antes, esto se hizo porque si solo modificabas el evento bucleaba
-    var btnEditar = document.createElement("button");
+    let btnEditar = document.createElement("button");
     btnEditar.innerHTML = "Editar";
     btnEditar.type = "button";
     btnEditar.addEventListener('click', function(){editarPedido(fila, IDPedido);});
@@ -400,14 +482,14 @@ function editarPedido(fila, IDPedido)
     fila.children[1].style.background = "white";
 
 //Se crea un selector y este reemplaza al tr de producto
-    var elegirProducto = document.createElement("select");
+    let elegirProducto = document.createElement("select");
     cargarSelector(elegirProducto);
     fila.replaceChild(elegirProducto,fila.children[0] );
 //Por defecto ya viene elegido el producto anterior
     elegirProducto.value = valoresAnteriores.producto;
 
 //Se crea un boton que al apretarse confirma los cambios, este reemplaza el boton anterior
-    var btnGuardar = document.createElement("button");
+    let btnGuardar = document.createElement("button");
     btnGuardar.innerHTML = "Guardar";
     btnGuardar.type = "button";
     btnGuardar.addEventListener('click', function(){guardarCambios(fila, valoresAnteriores, IDPedido);});
@@ -422,7 +504,8 @@ function editarPedido(fila, IDPedido)
 function cumpleFiltro(columna, busqueda)
 {
     //verifica si cumple con el criterio
-    var compareWith = columna.innerHTML.toLowerCase(); 
+  
+    let compareWith = columna.innerHTML.toLowerCase(); 
     if (busqueda.length == 0 || (compareWith.indexOf(busqueda) > -1))
         return true;
     return false;
@@ -432,10 +515,10 @@ function cumpleFiltro(columna, busqueda)
 function filtroTabla(busqueda,columna)
 {
     //"desaparece" las filas que no sea contengan lo buscado
-    var tabla = document.getElementById("tablaPedido");
-        for (var i = 1; i < tabla.rows.length; i++) {
-            var cellsOfRow = tabla.rows[i].getElementsByTagName('td');
-            var found = cumpleFiltro(cellsOfRow[columna],busqueda);
+    let tabla = document.getElementById("tablaPedido");
+        for (let i = 1; i < tabla.rows.length; i++) {
+            let cellsOfRow = tabla.rows[i].getElementsByTagName('td');
+            let found = cumpleFiltro(cellsOfRow[columna],busqueda);
             if(found)
             {
                 tabla.rows[i].style.display = "" ; 
@@ -446,25 +529,19 @@ function filtroTabla(busqueda,columna)
 
 function filtrarProductos()
 {
-    var columna = 0;  
+    let columna = 0;  
     filtroTabla(productoFiltrado.value, columna); 
 }
 
-
 /////////// FIN FILTROS TABLA DE PEDIDOS //////////////
-
-/////////// FIN TABLA DE PEDIDOS //////////////
-
 
 /////////// CAPTCHA //////////////
 
-let valorCaptcha;
-document.addEventListener("load", crearCaptcha());
 function crearCaptcha(){
 //carga al azar al cargar la pagina
-    var n1 = Math.floor((Math.random()*8+1) );
-    var  n2 = Math.floor((Math.random()*9) );
-    var n3 = Math.floor((Math.random()*9) );
+    let n1 = Math.floor((Math.random()*8+1) );
+    let  n2 = Math.floor((Math.random()*9) );
+    let n3 = Math.floor((Math.random()*9) );
     valorCaptcha = n1*100+n2*10+n3;
     verCaptcha(n1,n2,n3);
 }
@@ -480,19 +557,14 @@ function verCaptcha(n1,n2,n3) {
 
 /////////// VALIDACION DE FORMULARIO //////////////
 
-// Limpia el formulario cada vez que se cargue la pagina
-document.addEventListener("load", IDpedido.reset()); 
-let btnenviar = document.getElementById('botonenviar');
-btnenviar.addEventListener('click', validar);
-
 function validar(){ 
-    var IDcalle= document.getElementById("IDcalle").value;
-    var  IDnumero = document.getElementById("IDnumero").value;
+    let IDcalle= document.getElementById("IDcalle").value;
+    let  IDnumero = document.getElementById("IDnumero").value;
     if ((IDcalle == 0) || (IDnumero == 0)  ) {
         alert("Debes completar todos los campos correctamente");
     }     
     else{
-        var captcha = document.getElementById("captchaintroducido").value;
+        let captcha = document.getElementById("captchaintroducido").value;
         if (captcha !=  valorCaptcha){
             alert("El captcha introducido es incorrecto, por favor intente nuevamente");
         }
@@ -503,6 +575,7 @@ function validar(){
         }
         crearCaptcha();
     }
-/////////// FIN VALIDACION DE FORMULARIO //////////////
 }
+/////////// FIN VALIDACION DE FORMULARIO //////////////
 
+//////////////////////////////////// FIN PEDIDOS ONLINE ////////////////////////////////////
