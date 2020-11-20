@@ -1,107 +1,13 @@
-"use strict";
 //Repositorio del trabajo
-const gitURL = "https://github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo";
+//const gitURL = "https://github.com/Suldrum/012-Rodrigo-Selene-y-Milesi-Gonzalo";
 //Pagina de alojamiento del json
-const url = "https://web-unicen.herokuapp.com/api/groups/012-Rodrigo-Selene-y-Milesi-Gonzalo/pedidos";
+const url = "https://web-unicen.herokuapp.com/api/groups/012-Rodrigo-Selene-y-Milesi-Gonzalo/pedidos"; 
 
-/*
-$(document).ready(function () {  
-    $.ajax({  
-        type: "POST",  
-        url: "JavaScript.aspx/GetData",  
-        contentType: "application/json; charset=utf-8",  
-        dataType: "json",  
-        success: function (response) {  
-            $("#contenedor").text(response.d);  
-        },  
-        failure: function (response) {  
-            alert(response.d);  
-        }  
-    });  
-});  
+"use strict";
 
-*/
-/*
-function cargarContenedor(referenciaHTML)
-{
-   // event.preventDefault();
-    fetch(referenciaHTML).then(
-    function(response){
-    response.text().then(t =>
-    document.querySelector("#contenedor").innerHTML = t);
-    });
-}
+/////////// PEDIDOS ONLINE //////////////
 
-*/
-
-/*
-$(document).ready(function()
-    {
-        $("a").on("click", function(event)
-        {
-        try{   //Cancela el evento del href, por defecto al pinchar en un link
-            // te envia a este, con esto evitamos que ejecute el link
-            event.preventDefault();            
-           //Cargamos el contenido del enlace
-            $('#contenedor').load(this.href);
-        }
-            catch(error) {console.log("fail");}
-        });
-    });
-*/
-/*
-$(document).ready(function()
-    {
-        $("a").on("click", function(event)
-        {
-            event.preventDefault();
-            document.querySelector("#contenedor").innerHTML ="";    
-            fetch(this.href, {
-            //    method: 'GET',
-                mode: 'cors',
-            })
-            .then(function(response){
-                response.text()
-                .then(t => document.querySelector("#contenedor").innerHTML = t);
-            
-            });
-                   
-           
-        });
-    });
-*/
-//////////////BOTON MENU NAV ////////////////////////////////////
-
-//let btnmenu = document.getElementById('btnNav');
-/*window.addEventListener('resize', reajustar);
-
-function reajustar(){
-    if (window.innerWidth >= 706.05){
-        document.getElementById("listaNav").style.display = "flex";
-    }else{
-        document.getElementById("listaNav").style.display = "none";
-    }
-}
-/*
-function  MostrarNav(){
-    var listaMenu = document.getElementById("listaNav");
-    if (listaMenu.style.display == "none"){
-        listaMenu.style.display = "grid";
-    }else
-        listaMenu.style.display = "none";
-}
-*/
-//btnmenu.addEventListener("click", MostrarNav);
-
-
-
-////////////// FIN BOTON MENU NAV ////////////////////////////////////
-
-/////////// TABLA DE PEDIDOS //////////////
-
-//LAS SIGUIENTES LINEAS DE CODIGO REFIEREN DIRECTA O INDIRECTAMENTE A LA TABLA DE PEDIDOS DE pedido_online.html
-
-
+////////////////// TABLA DINAMICA /////////////////////////
 
 ////////////////// BOTONES TABLA DINAMICA /////////////////////////
 
@@ -119,29 +25,9 @@ btnBorrarTabla.addEventListener('click', borrarTabla);
 
 let productoFiltrado = document.getElementById("idProductoFiltro");
 productoFiltrado.addEventListener('keyup', filtrarProductos);
-//document.addEventListener("load", cargarTabla());
-document.addEventListener("load", actualizarTabla());
+document.addEventListener("ready", actualizarTabla());
 
 //Esta funcion trae la informacion en el Heroku y la manda a la tabla
-
-/*
-async function cargarTabla() {
-try
-{
-    let respuesta = await fetch(url, {
-        method: 'GET',
-        mode: 'cors',
-        });
-    let herukoJson = await respuesta.json();
-    herukoJson.pedidos.forEach(function(pedido){
-       cargarPedido(pedido.thing, pedido._id);
-       })
-
-}
-    catch(error) {console.log(error)}    
-}
-*/
-
 function actualizarTabla(){ 
     fetch(url)
     .then(function(respuesta){
@@ -161,7 +47,7 @@ function actualizarTabla(){
         herukoJson.pedidos.forEach(function(pedido){ 
             cargarPedido(pedido.thing, pedido._id);
         })
-        console.log("la tabla se ha actualizado");
+      //  console.log("la tabla se ha actualizado");
     })
     .then(function(){ 
         filtrarProductos();})
@@ -173,12 +59,7 @@ function actualizarTabla(){
     .catch(function(error) {
         console.log("Hubo un problema con la petición Fetch:" + error.message);
       });    
-
-//location.reload();
-
 }
-
-
 
 //Esta funcion carga a la tabla un nuevo pedido.
   function cargarPedido(nuevoPedido, IDnuevoPedido) {
@@ -199,13 +80,6 @@ function actualizarTabla(){
     var precio = document.createElement("td");
     precio.textContent =nuevoPedido.precio; // el textContent del td es el precio
     fila.appendChild(precio);
-
-    /* 
-        var botones = document.createElement("td");
-        botones.appendChild(btnEditar);
-        botones.appendChild(btnBorrar);
-        fila.appendChild(botones);
-   */
   
    //Crea el boton de editar, le asigna las propiedades
     var btnEditar = document.createElement("button");
@@ -332,12 +206,11 @@ function generarProducto(){
 //Esta funcion genera un cantidad random segun el producto que llega por parametro
 function generarCantidad(producto){
     var compareWith = "pizza";
-    var cantidad=0;
-    if (compareWith.localeCompare(producto) < 1){
-        return cantidad = Math.floor((Math.random()*3+1) );
-    }else{
-        return cantidad = Math.floor((Math.random()*12+1) );
-    }
+    if (compareWith.localeCompare(producto) < 1)
+        return ( Math.floor((Math.random()*3+1)) )
+    else
+        return ( Math.floor((Math.random()*12+1)) )
+    
 }
 
 //Esta funcion genera un pedido random 3 veces
@@ -394,7 +267,6 @@ var tabla = document.getElementById("tablaPedido");
                 })
                 .then(function(respuesta){
                     if(respuesta.ok) {
-                     //Borra el ultimo elemento de la tabla, capaz y deberia borrar el que esta leyendo pero como carga segun le llega habria que hacer un metodo que busque en que posicion esta y todavia no hay producto unico
                         tabla.deleteRow(-1);
                     }
                     else {
@@ -464,7 +336,7 @@ function editarHeroku(fila, IDPedido, valoresAnteriores)
         else {
             //Si funciona el PUT da el aviso y devuelve el json
             alert("Datos modificados");
-            return respuesta.json(); //esto es extremamente necesario???
+            return respuesta.json();
         }
     })
 }
@@ -472,13 +344,13 @@ function editarHeroku(fila, IDPedido, valoresAnteriores)
 //Esta funcion deja de permitir la edicion de la tabla y que cambios ocurren
 function guardarCambios(fila, valoresAnteriores, IDPedido)
 {
-//Las columnas dejan de permitir alteracion y se les ponen un fondo azul porque quiero ver que cambio
+//Las columnas dejan de permitir alteracion
     var producto = document.createElement("td");
     producto.textContent =fila.children[0].value; // el textContent del td es el selector
     fila.replaceChild(producto, fila.children[0]);
     fila.children[1].contentEditable = "false";
-    producto.style.background = "blue";
-    fila.children[1].style.background = "blue";
+    producto.style.background = "whitesmoke";
+    fila.children[1].style.background = "whitesmoke";
     //Si una cantidad no es un numero o negativa la vuelve 0
     if (isNaN(fila.children[1].innerHTML) || (parseInt (fila.children[1].innerHTML)) <1)
     {
@@ -543,13 +415,9 @@ function editarPedido(fila, IDPedido)
 
 }
 
-//
-
 ////////////////// FIN FUNCIONES DE EDICION /////////////////////////
 
 /////////// FILTROS TABLA DE PEDIDOS //////////////
-
-
 
 function cumpleFiltro(columna, busqueda)
 {
@@ -591,6 +459,7 @@ function filtrarProductos()
 /////////// CAPTCHA //////////////
 
 let valorCaptcha;
+document.addEventListener("load", crearCaptcha());
 function crearCaptcha(){
 //carga al azar al cargar la pagina
     var n1 = Math.floor((Math.random()*8+1) );
@@ -599,9 +468,6 @@ function crearCaptcha(){
     valorCaptcha = n1*100+n2*10+n3;
     verCaptcha(n1,n2,n3);
 }
-
-document.addEventListener("load", crearCaptcha());
-
 
 function verCaptcha(n1,n2,n3) {    
 //les digo que numero deben poner al cambiar el captcha
@@ -612,11 +478,12 @@ function verCaptcha(n1,n2,n3) {
 
 /////////// FIN CAPTCHA //////////////
 
-
 /////////// VALIDACION DE FORMULARIO //////////////
-document.addEventListener("load", IDpedido.reset()); /*Limpia el formulario cada vez que se cargue la pagina*/
+
+// Limpia el formulario cada vez que se cargue la pagina
+document.addEventListener("load", IDpedido.reset()); 
 let btnenviar = document.getElementById('botonenviar');
-btnenviar.addEventListener('click', validar); 
+btnenviar.addEventListener('click', validar);
 
 function validar(){ 
     var IDcalle= document.getElementById("IDcalle").value;
@@ -638,3 +505,4 @@ function validar(){
     }
 /////////// FIN VALIDACION DE FORMULARIO //////////////
 }
+
