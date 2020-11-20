@@ -7,9 +7,10 @@ const url = "https://web-unicen.herokuapp.com/api/groups/012-Rodrigo-Selene-y-Mi
 
 //////////////////////////////////// CARGA DE CONTENEDOR ////////////////////////////////////
 
-// Carga el contenido de una pagina que le llega por referencia en el contenedor
+// Carga el contenido de una pagina que le llega por referencia en el div contenedor del body de index.html
 function cargarPagina(pagina)
-{   
+
+{   // Llama y toma el contenido de la pagina que llega por referencia
     fetch(pagina, {
         method: 'GET',
         mode: 'cors',
@@ -20,16 +21,17 @@ function cargarPagina(pagina)
     .then(t => {
         document.querySelector("#contenedor").innerHTML ="";
         document.querySelector("#contenedor").innerHTML = t;
-        // Si la pagina es pedido online inicio el script para realizar el pedido
+        // Modifica el url del navegador para que muestre en que pagina esta
         history.pushState(null, "", pagina);
+        // Si la pagina es pedido online inicio el script para realizar el pedido
         if (pagina === "pedido_online.html")
         {
             iniciarPedido();
         }
     })
-
 }
-let enlaces;
+
+// Cuando se selecciona uno de los links del menu de navegacion impide su ejecucion y llama a cargarPagina con la referencia relativa del link seleccionado
 $("a").on("click", function(event)
 {   
     event.preventDefault();
@@ -50,8 +52,12 @@ window.onload = function(){
 
 ////////////////////////////////// BOTON MENU NAV ////////////////////////////////////
 
+let btnmenu = document.getElementById('btnNav');
+btnmenu.addEventListener("click", MostrarNav);
+
 window.addEventListener('resize', reajustar);
 
+// Responsive: cambia el estilo del menu de navegacion cuando se aumenta la pantalla.
 function reajustar(){
     if (window.innerWidth >= 706.05){
         document.getElementById("listaNav").style.display = "flex";
@@ -59,9 +65,8 @@ function reajustar(){
         document.getElementById("listaNav").style.display = "none";
     }
 }
-let btnmenu = document.getElementById('btnNav');
-btnmenu.addEventListener("click", MostrarNav);
 
+// Muestra y esconde el menu cuando esta en modo Mobile
 function  MostrarNav(){
     let listaMenu = document.getElementById("listaNav");
     if (listaMenu.style.display == "none"){
@@ -83,29 +88,29 @@ let valorCaptcha;
 function iniciarPedido(){
     console.log("Iniciando Pedido");
 
-productoFiltrado = document.getElementById("idProductoFiltro");
+    productoFiltrado = document.getElementById("idProductoFiltro");
 
-////////////////// BOTONES TABLA DINAMICA /////////////////////////
+    ////////////////// BOTONES TABLA DINAMICA /////////////////////////
 
-let btnAgregarPedido = document.getElementById('btnAgregar');
-let btnAgregarRandom = document.getElementById('btnAgregarRandom');
-let btnBorrarTabla = document.getElementById('btnBorrarTabla');
+    let btnAgregarPedido = document.getElementById('btnAgregar');
+    let btnAgregarRandom = document.getElementById('btnAgregarRandom');
+    let btnBorrarTabla = document.getElementById('btnBorrarTabla');
 
-btnAgregarPedido.addEventListener('click', agregarNuevoPedido);
-btnAgregarRandom.addEventListener('click', agregarPedidoRandom);
-btnBorrarTabla.addEventListener('click', borrarTabla);
+    btnAgregarPedido.addEventListener('click', agregarNuevoPedido);
+    btnAgregarRandom.addEventListener('click', agregarPedidoRandom);
+    btnBorrarTabla.addEventListener('click', borrarTabla);
 
-////////////////// FIN BOTONES TABLA DINAMICA /////////////////////////
+    ////////////////// FIN BOTONES TABLA DINAMICA /////////////////////////
 
-productoFiltrado.addEventListener('keyup', filtrarProductos);
-document.addEventListener("ready", actualizarTabla());
+    productoFiltrado.addEventListener('keyup', filtrarProductos);
+    document.addEventListener("ready", actualizarTabla());
 
-document.addEventListener("load", crearCaptcha());
+    document.addEventListener("load", crearCaptcha());
 
-// Limpia el formulario cada vez que se cargue la pagina
-document.addEventListener("load", IDpedido.reset()); 
-let btnenviar = document.getElementById('botonenviar');
-btnenviar.addEventListener('click', validar);
+    // Limpia el formulario cada vez que se cargue la pagina
+    document.addEventListener("load", IDpedido.reset()); 
+    let btnenviar = document.getElementById('botonenviar');
+    btnenviar.addEventListener('click', validar);
 
 }
 
@@ -504,7 +509,7 @@ function editarPedido(fila, IDPedido)
 function cumpleFiltro(columna, busqueda)
 {
     //verifica si cumple con el criterio
-  
+    busqueda = busqueda.toLowerCase();
     let compareWith = columna.innerHTML.toLowerCase(); 
     if (busqueda.length == 0 || (compareWith.indexOf(busqueda) > -1))
         return true;
