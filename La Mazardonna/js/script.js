@@ -9,7 +9,6 @@ const url = "https://web-unicen.herokuapp.com/api/groups/012-Rodrigo-Selene-y-Mi
 
 // Carga el contenido de una pagina que le llega por referencia en el div contenedor del body de index.html
 function cargarPagina(pagina)
-
 {   // Llama y toma el contenido de la pagina que llega por referencia
     fetch(pagina, {
         method: 'GET',
@@ -35,11 +34,8 @@ function cargarPagina(pagina)
 $("a").on("click", function(event)
 {   
     event.preventDefault();
-    // Tomo la referencia y creo un arreglo de string donde guardo cada seccion separada por "/"
-    let urlInvocado = this.href.split("/");
-    // La ultima posicion es la ruta relativa de la pagina
-    let pagina = urlInvocado[urlInvocado.length-1];
-    cargarPagina(pagina);
+    // Mando a cargar la referencia del link apretado
+    cargarPagina(this.getAttribute("href"));
 });
 
 // La pagina que se carga al inicio por defecto es home.html
